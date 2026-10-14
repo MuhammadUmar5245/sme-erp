@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+# Django
+staticfiles/
+media/
+*.sqlite3
+# Env and secrets
+.env
+certs/
+# Backups
+backups/
+*.sql.gz
+# OS / editor
+.DS_Store
+Thumbs.db

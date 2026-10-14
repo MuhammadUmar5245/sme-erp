@@ -1,0 +1,7 @@
+{
+  "files.exclude": { "**/__pycache__": true, "**/.pytest_cache": true },
+  "python.testing.pytestEnabled": true,
+  "editor.formatOnSave": true,
+  "[python]": { "editor.defaultFormatter": "ms-python.black-formatter" },
+  "files.associations": { "*.html": "django-html" }
+}

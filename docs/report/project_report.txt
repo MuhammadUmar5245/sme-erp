@@ -1,0 +1,414 @@
+Chapter 1: Project Background / Company and Industry Profile
+1.1 Company Description 
+In the ever-evolving world of business, companies are increasingly adopting Business Information Systems (BIS) to enhance their operations, decision-making processes and stay competitive. This study seeks to explore the integration of cutting-edge information systems to resolve business issues, streamline processes and enhance business performance.
+This research will explore the integration of Enterprise Resource Planning (ERP) systems, with a particular focus on the deployment of ERP systems in small and medium-sized enterprise (SME). SMEs can lack resources and adopting such systems can assist in growing their business and increasing efficiency. The study will examine the barriers SMEs face in implementing ERP systems, and assess the advantages they can derive from implementing these systems.
+1.2 External Analysis
+The business environment is a critical factor in business strategy, operations and performance. The industry environment, macroeconomic environment and trends are important for placing the use and effects of Business Information Systems in SMEs in a broader context.
+1.2.1 Industry Profile
+In 2019, Statista reported the global enterprise software market to grow at a compound annual growth rate (CAGR) of 7.4% in the next five years. The enterprise resource planning (ERP) software market is set to grow to $78 billion by 2026. This is driven by the rising need for cloud-based ERP solutions that provide flexibility, scalability and affordability for enterprises of all sizes (Statista, 2020).
+ERP systems provide an integrated approach to manage key business processes for SMEs including finance, supply chain management, and human resource management. Gartner's 2020 Market Guide for Small and Midsize Enterprise ERP points to the adoption of ERP systems by SMEs due to their requirement for real-time data analytics and integrated processes. But SMEs are finding it hard to implement ERP systems because of cost, complexity and a lack of resources to manage the implementation of the system (Gartner, 2020).
+1.2.2 Macro Environmental Analysis
+The macro environmental factors affecting the implementation of BIS in businesses are technical development, economic and government regulations.
+Technological Advancements: The advent of cloud computing has resulted in reduced costs for ERP implementation, thus making it more feasible for SMEs. SMEs can expand their business operations with cloud-based ERP systems without significant hardware and software investments (Forbes, 2020).
+Economic Environment: The COVID-19 pandemic has caused a global economic downturn, making digital transformation more critical than ever. Businesses are now relying on business automation and data analytics to stay competitive in a volatile market (McKinsey, 2020).
+Government Regulations: Governments worldwide are promoting the use of digital technologies among SMEs through tax breaks, subsidies and low-interest loans. This has also led to the rapid adoption of cloud services-based ERP in SMEs (OECD, 2020).
+1.2.3 Strategic Map
+The strategic map for the use of BIS in SMEs is operational efficiency, cost effectiveness and informed decision making. A SWOT analysis can be used to get an understanding of the strategic situation for SMEs that are considering ERP systems:
+Strengths: Enhanced efficiency, real-time information and improved decision-making.
+Weaknesses: Initial investment, implementation challenges, and skilled workforce.
+Opportunities: Adoption of new technologies (artificial intelligence, internet of things) into ERP systems, government incentives and growth in cloud technology.
+Threats: Security risks, technological advances, and competition from larger and more established corporations.
+1.2.4 Opportunities and Threats
+Opportunities:
+Enterprise Resource Planning (ERP) systems in the cloud are an opportunity for SMEs. They provide scalability, flexibility and cost-effectiveness, allowing businesses to expand without hefty investments in IT infrastructure.
+Greater access to data analytics solutions offers the opportunity for SMEs to improve decision-making with real-time insights from integrated business systems.
+Threats:
+Security of data is a major issue for SMEs. The move to the cloud can expose SMEs to the risks of data breaches as well as GDPR and other regulatory compliance issues.
+The ever-evolving nature of technology can be daunting for SMEs, as they may find it difficult to adapt to system upgrades, software add-ons and feature releases.
+1.3 Internal Analysis (with Company)
+An analysis of the company and how it uses Business Information Systems is crucial to determine its readiness and ability to embrace new technologies. In the case of SMEs, this includes an analysis of current processes and technology used, and a readiness for change.
+1.3.1 Value Chain Analysis
+A Value Chain Analysis for a typical SME will pinpoint value-adding opportunities for an ERP solution:
+Inbound Logistics: Optimising stock control and purchasing.
+Operations: Scheduling production and minimising idle time.
+Outbound Logistics: Optimizing the delivery process and customer experience.
+Marketing and Sales: Leveraging real-time information for marketing and sales forecasting.
+Service: Improving service by linking it to a customer relationship management (CRM) system.
+This assessment helps determine the areas in which SMEs can gain substantial gains in efficiency and cost savings with the adoption of ERP systems.
+1.3.2 Strengths and Weaknesses
+Strengths:
+The structure of SMEs is often flat, enabling them to easily adopt new technologies.
+SMEs often have a customer focus, which is supported by enhanced customer relationship management (CRM) in ERP systems.
+Weaknesses:
+Budget and staffing needs make it difficult for SMEs to implement ERP.
+Employee and management reluctance to change can slow the introduction of new systems.
+1.4 Synthesis
+1.4.1 SWOT Analysis
+The external and internal analysis forms the basis of the SWOT analysis that offers a strategic insight of the opportunities and threats for SMEs in relation to ERP implementation.
+Strengths: Increased efficiency, scalability and customer service.
+Weaknesses: Costly, complex and requires in-house expertise.
+Opportunities: ERP in the cloud, use of AI, IoT, and machine learning technologies.
+Threats: Security risks, fast-paced technological advancements, and limited resources.
+1.4.2 Identified Strategic Business Problems / Issues and Opportunities
+Problems: Cost, implementation, skills shortage and change management.
+Opportunities: Increase in cloud ERP systems, government support for digitalisation, and possibility to integrate new technologies into ERP.
+1.4.3 Added Value
+An ERP system can greatly add value to SMEs by increasing data availability, optimising business processes, improving decision making and supporting sustainable business growth.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+Chapter 2: Feasibility Analysis
+This chapter will assess the feasibility of adopting Business Information Systems (BIS) such as ERP systems in small and medium-sized enterprises (SMEs). This involves qualitative, quantitative, product/technical, development and operational aspects. Our aim is to determine the feasibility and efficacy of ERP systems in terms of the benefits and drawbacks.
+2.1 Qualitative Benefits Feasibility
+Qualitative feasibility of an ERP system is the fit between the ERP system and the mission, vision and strategies of the organisation. This relates to the non-financial benefits of the ERP system such as better decision-making, customer service and communication.
+2.1.1 Consistency with Vision and Mission
+ERP systems are designed to bring together all the parts of the business, thereby eliminating inconsistencies and enhancing efficiency. In the case of SMEs, ERP systems can be in line with corporate visions that aim to promote growth, customer satisfaction, and efficiency. When ERP systems support a vision, they are able to automate processes, reduce manual intervention and provide real-time data, which can help in decision-making.
+For example, in small and medium-sized enterprises (SMEs), ERP systems allow for the management of all processes, from procurement to production to after-sales services, through a single system, and aiding in the growth of the business without a need for additional resources. The ability to integrate and automate processes and systems also allows companies to innovate and stay agile, which supports the company's vision to provide a better service and increase customer loyalty.
+2.1.2 Alignment with Strategy
+ERP solutions fit with the strategies of SMEs, particularly those that want to:
+Enhance efficiency: ERP systems automate key business processes, enabling firms to eliminate inefficiencies and waste, and boost productivity.
+Facilitate growth: Cloud ERP systems help SMEs grow their business without being limited by legacy systems.
+Further, ERP systems help implement strategies emphasising data-driven decision-making, by providing timely and real data, thus supporting the organisational objectives of better insights, and responsiveness to market signals.
+2.1.3 Support for Corporate Goals
+ERP helps achieve tangible benefits such as cost reduction, better customer service and improved quality of product or service. This in turn helps attain corporate objectives like profits, competitiveness and growth. In a competitive market in which SMEs may not have excess resources, ERP helps SMEs get the most out of their resources.
+2.2 Quantitative Benefits Feasibility
+Quantitative feasibility is the analysis of the financial impact of implementing ERP systems, including the return on investment (ROI), cost benefit and other financial indicators to determine if the benefits justify the cost.
+2.2.1 Return on Investment (ROI)
+The ROI of an ERP system can be calculated by weighing the implementation costs against the gains in productivity, efficiency, and profitability. Panorama Consulting Solutions (2020) reports that companies can expect to improve their operational efficiency by 10-30% in the first 12 months of implementing an ERP system. SMEs can benefit from higher profit margins through cost reduction in inventory, procurement and customer service.
+2.2.2 Payback Period
+The payback period of an ERP system is the time it takes for a company to recover the cost of the system through savings in costs and increased efficiency. The payback period for many SMEs is between 1-3 years, depending on the size and complexity of the system. SMEs can anticipate quick wins in inventory and order management, among other areas, to accelerate payback.
+2.2.3 Net Present Value (NPV)
+NPV is a financial ratio to assess the profitability of an investment by comparing the present value of the benefits and costs. For SMEs' selection of an ERP system, the NPV considers the initial cost of the ERP system (purchasing and implementation) and the subsequent benefits of the investment through process automation, improved decision making and business expansion. If the NPV is positive, the ERP system is profitable for the organisation.
+
+2.2.4 Internal Rate of Return (IRR)
+The Internal Rate of Return (IRR) is another key measure for assessing the return on an ERP system. The IRR is the discount rate at which the net present value of the future cash flows from the ERP system is zero. A IRR of over 20% for most SMEs means that the investment in ERP will be financially justified, given that the system will create substantial value for the business.
+2.2.5 Total Cost of Ownership (TCO)
+TCO is the total cost of owning the ERP system, which includes the cost of the system, implementation, maintenance and training. TCO should be considered by SMEs to ensure long-term cost savings outweigh initial costs. While ERP systems are costly, cloud-based systems can reduce TCO as they have lower upfront costs and eliminate hardware maintenance (Forbes, 2020).
+2.3 Product/Technical Feasibility
+Product/technical feasibility looks at the suitability of the ERP system to meet the technical specifications and suit the business needs.
+2.3.1 Flexibility
+The ERP system should be flexible and adaptable to business growth, changes and upgrades. SAP Business One and Microsoft Dynamics 365 ERP systems are extremely flexible, and can grow with small and medium-sized enterprises (SMEs) and new modules can be added to support the dynamic nature of a business.
+2.3.2 Performance
+Performance is a critical factor for ERP systems, with the need for rapid data processing, smooth workflows and real-time reporting. Low performance (such as slow functionality or downtime) can seriously impact business. For best performance, SMEs should consider ERP systems with a good reputation for stability.
+2.3.3 Capacity & Scalability
+The ERP system must be capable of scaling to support more data and business operations. This allows SMEs to grow their ERP system, without having to replace it.
+2.3.4 Reliability
+ERP systems need to be reliable, with high availability and secure data storage. Reliability is provided by the redundant servers of cloud systems, giving companies access to their data.
+2.3.5 Availability
+The ERP system should be accessible from any device and operating system, allowing employees access to the system from any location, which is an essential feature for mobile and remote workers.
+2.3.6 Security
+Security is important in ERP systems. It is essential for companies to encrypt and secure financial, inventory and customer data from cyber-attacks. Data encryption, two-factor authentication, and security patches are offered by ERP vendors.
+2.3.7 Maintainability
+ERP system must be maintainable; with regular upgrades, patches and fixes. Cloud-based ERP systems may have auto-updates, which will facilitate SMEs.
+2.3.8 Portability
+The ERP should be accessible on different devices, such as desktop, tablet and smart phone, to access the system.
+2.3.9 User friendly (Ease to Use)
+User friendliness is essential to getting SMEs to adopt ERP. A user-friendly interface facilitates quicker learning and increases productivity.
+2.4 Development Feasibility
+2.4.1 Project Development Methodology
+Methodology of development is an important aspect of ERP implementation. Agile methodology is commonly used for SMEs, as it allows for incremental development and faster learning. However, for companies with more formalised processes, Waterfall methodology may be more suitable.
+2.4.2 Project Timeline
+The timeframe for the ERP implementation project is usually a few months, ranging from 6-12 months. The process may involve:
+•	Initial Planning: 1-2 months
+•	Software Customization: 2-3 months
+•	Testing and Training: 2-3 months
+•	Go Live and Post-Implementation Support: 1-2 months
+2.4.3 Project Risk Factors
+Enterprise Resource Planning (ERP) implementation risks include:
+High Costs: The cost of the implementation may increase.
+Downtime: Disruption can impact the business.
+User Resistance: Users may not accept the new system.
+A risk management plan should be developed to recognise, analyse and minimise these risks.
+2.5 Operational Feasibility
+2.5.1 Technical Support
+SMEs need to make sure the ERP system includes technical support, either from the vendor or third-party companies, in case there are problems after the initial period.
+2.5.2 User Readiness
+User readiness is important for the success of an ERP system. Training users and involving them in the process is crucial to the success of the implementation.
+2.5.3 Changeover Strategy
+SMEs must have a changeover strategy to move from their existing systems to the new ERP system, with options including parallel running (old and new systems running in parallel) or a cut-over (old system completely replaced by the new system).
+Conclusion
+This chapter discussed the viability of adopting ERP systems in SMEs in terms of qualitative, quantitative, product/technical, development and operational factors. While ERP systems can provide numerous advantages such as efficiency, cost reduction and scalability, SMEs need to assess the costs, risks and readiness to implement such systems. Through a methodology that ensures alignment with the organisation's objectives, SMEs can successfully implement ERP systems that improve their business processes, leading to growth and development.
+
+
+
+
+
+
+
+
+Chapter 3: Project Analysis
+This chapter focuses on the detailed analysis and problem-solving approach to Business Information Systems (BIS), in particular ERP in small and medium-sized enterprises (SMEs). The analysis will include the project goals, research methodology and the process of requirements elicitation. We will also discuss other literature and research to validate the results and approaches.
+3.1 Research Method
+The aim of this project is to explore the problems and advantages SMEs experience when implementing ERP systems. To solve the business problem, we will use a case study approach, which will help in understanding practical business problems and solutions. This will enable us to explore the use of ERP systems in different SMEs and identify some of the problems with implementation.
+The approach to solving the problem will be founded on the identification of issues with existing processes in SMEs, particularly in the areas of inventory, customer management and financial management. Through the study of past case studies and literature, we will identify the typical problems that SMEs encounter with the adoption of ERP systems and suggest solutions to these problems.
+The analysis will focus on:
+•	Identifying the business problem.
+•	Identifying the requirements for SMEs in adopting ERP.
+•	Determining solutions from previous research and cases.
+3.2 Project Objectives
+The main goal of this study is to assess the feasibility of implementing ERP systems into SMEs and to identify the challenges and benefits SMEs face while adopting ERP systems. The specific objectives are:
+•	To understand the problems SMEs are facing and how ERP can help them.
+•	To assess the costs and benefits of ERP solutions for SMEs, both in qualitative and quantitative terms.
+•	To assess the needs of SMEs for ERP systems, and map these to ERP features.
+•	To assess the challenges of adoption, including cost, employee resistance and expertise.
+•	To develop a model for ERP implementation in SMEs based on case studies and literature.
+These objectives will assist the project in identifying the business issues and the ERP solutions that may help SMEs, and build a comprehensive knowledge of the successful ERP systems.
+3.3 Approach and Data Collection
+A combination of qualitative and quantitative research methods will be adopted in this project. The research problem for this project is a combination of literature and case study review and secondary data collection to gain insight and evaluate the possibility of ERP systems in SMEs.
+3.3.1 Qualitative Research
+Interviews and Focus Groups: Although primary qualitative research (interviews and surveys) may not be possible, secondary data will be used. Other case studies will provide insights as to the experiences of businesses implementing ERP and the challenges they face.
+Case Studies: A case study of other businesses that have implemented ERP will be undertaken, with emphasis on SMEs. These will give us an insight into the use, challenges and success stories.
+3.3.2 Quantitative Research
+Secondary data analysis: For quantitative data, we will conduct secondary data analysis of industry reports, government reports and financial reports of SMEs that have adopted ERP. We will look at indicators such as return on investment (ROI), payback period and total cost of ownership (TCO) to establish the economic feasibility of ERP systems in SMEs.
+Surveys: If secondary data is not available, we will design online surveys and distribute them to SMEs that have implemented ERP to collect data on key performance indicators (KPIs), cost and satisfaction levels.
+3.3.3 Mixed Methods
+This will allow us to collect sufficient data to understand how and why ERP adoption is advantageous for SMEs. The qualitative data will assist in understanding the difficulties and benefits of ERP adoption, and the quantitative data will assist in ERP financial analysis.
+3.4 Literature Review
+A literature review will be conducted to learn from the knowledge of ERP adoption in SMEs. The focus will be on:
+ERP Adoption in SMEs: Literature that addresses factors that affect SME's ERP adoption, challenges and benefits.
+Return on Investment and ERP Systems: Research that investigates the return on investment (ROI) and cost-benefit analysis of ERP systems in SMEs.
+Overcoming Resistance and Change: Academic papers that address the challenges of managing change and resistance when implementing new technologies in SMEs, such as training programs and cultural transformation.
+Cloud ERP Systems: SMEs adopting cloud ERP systems for the benefits of cost, flexibility and convenience.
+The literature will show common themes, patterns, and issues with ERP adoption in SMEs, providing a theoretical basis for the study.
+3.5 Requirements Elicitation
+To develop a successful ERP system for SMEs, it is important to elicit functional and non-functional requirements. This includes identifying the functionality that the ERP system must provide to support SMEs.
+3.5.1 Reporting Requirements
+SMEs need effective reporting to monitor and report on important business indicators, including sales, stock levels, financial data and customer feedback. The ERP system should provide real-time and historical reporting capabilities, with the ability to customise reports to meet business requirements.
+3.5.2 Interface/Integration Requirements
+The ERP system should be able to integrate with other business software such as CRM, POS and accounting systems. Integration requirements will be defined to ensure data is shared across departments and systems.
+3.5.3 Usability Requirements
+The ERP system should have an intuitive interface that is easy to navigate and understand. This is essential for SMEs with limited IT support and resources.
+3.5.4 Availability Requirements
+ERP system should be accessible 24/7 with minimal downtime. For SMEs, particularly those with operations in different time zones, the system needs to be available to support the business.
+3.5.5 System Capacity and Scalability (Optional)
+The system should be scalable. SMEs typically start small and plan to grow, so the ERP system must be scalable to handle more data, transactions and users without compromising performance.
+3.6 Requirements Documents
+The following documents will be prepared to document the business' requirements for the ERP system:
+1.	Functional Requirements: This will be a comprehensive list of the ERP system's functionality, such as inventory, orders, financial reports, etc.
+2.	Non-functional Requirements: System performance, scalability, security and user-friendliness.
+3.	Functional Models: Use Case Diagrams and Data Flow Diagrams (DFD) will be used to illustrate the system's features and data flows.
+4.	Behavioral Models: Activity Diagrams or Sequence Diagrams may be used, if required, to depict the system processes and operations.
+3.7 Project Sign-Off Section
+This section will contain the approval and sign-off by the project sponsor, team members or clients that the project goals and objectives have been achieved. This will be recorded for sign-off prior to moving to the next stage.
+Conclusion
+This chapter has given an overview of the project analysis, the problem-solving approach, project goals, research approach and requirements gathering. Through our research on previous studies, we have learnt of the problems and opportunities associated with the use of ERP systems in SMEs. The requirements document and models will guide the later stages of the design and development of the ERP system, ensuring it is tailored to the specific requirements of SMEs.
+
+
+Chapter 4: Project Design
+This chapter will concentrate on the design strategy, development approach and the technical considerations in the design and implementation of Business Information Systems (BIS) in small and medium-sized enterprises (SMEs), including the role of Power BI for data analytics and reporting. Here we will discuss the system architecture, software and tools that will be used to design and develop the ERP system for SMEs. We will also discuss how Power BI can be used for data analysis and decision-making in the system
+4.1 Design Strategy
+The approach for the design of the ERP system will be a hybrid model, which will include cloud-based ERP and on-premise features when necessary. This approach will ensure the system is adaptable, scalable and affordable for SMEs, while meeting business needs.
+Key Elements of the Design Strategy:
+Cloud ERP System: We will use a cloud-based ERP system to reduce initial investment, ensure flexibility and allow SMEs to access the system from any location, which is essential for a distributed workforce.
+Modular Design: The ERP system will be modular, so that SMEs can select the modules they require (e.g., inventory, accounting, customer relationship management). This will allow SMEs to only implement the modules they need.
+Integration with Power BI: The ERP system will focus on improving business decisions. The integration of Power BI with ERP will allow companies to create interactive reports and dashboards that will provide them with real-time information about their business.
+4.2 Project Development Methodology
+We will use an Agile methodology for the development of the ERP system to provide iterative development. This will enable us to adapt to evolving business requirements and quickly respond to feedback.
+Agile Methodology Overview:
+Iterations: The system will be developed in iterations (typically 2-4 weeks), with each iteration focusing on delivering a particular feature or functionality. This will enable SMEs to roll out the system in stages.
+Communication: Regular feedback from key stakeholders (business owners, IT staff, end-users) will be used to ensure that the ERP system meets business and user needs.
+Testing: Testing will be carried out at the end of each sprint to ensure the system is functioning correctly. This will include unit testing, integration testing, and user acceptance testing (UAT).
+4.3 Project Timeline
+The project development and implementation schedule are as follows
+Phase	Duration	Description
+Initial Planning	1-2 months	Define project scope, select ERP modules, and set objectives.
+System Design	2-3 months	Design system architecture, define user interfaces, and integrate Power BI.
+Development	3-4 months	Develop and configure ERP modules. Implement Power BI integration for data analysis and reporting.
+Testing & Quality Assurance	1-2 months	Conduct testing (unit, integration, UAT). Optimize system.
+Deployment	1 month	Final deployment and training for users.
+Post-Implementation Support	Ongoing	Provide ongoing support, troubleshooting, and updates.
+
+4.4 Structural Model
+In this section, a discussion of the system architecture and design of the system, hardware, software and networking will be presented. The use of Power BI will be important to assure users will have access to real-time analytics and reporting.
+4.4.1 Cloud-Based System Architecture
+UI: The system's user interface (UI) will be web-based, accessible on desktop, tablet and mobile devices.
+Backend: The system will have a cloud-based backend, with a relational database management system (RDBMS) such as PostgreSQL or MySQL for scalability and flexibility. The system will store data in the cloud, removing the need for on-premise servers and maintenance.
+Power BI Reporting: Power BI will be used to connect to the ERP system for reporting and dashboarding. These will include sales, inventory, financials and other reports.
+Service Layer: A service layer (RESTful API) will be used to connect to the ERP system to provide data to Power BI for analysis and reporting.
+4.4.2 Database Requirements
+Database Design: An efficient database is required to store business data such as finance, inventory, sales and customers. This database will be scalable and able to accommodate the data demands of SMEs as their business expands.
+Schema Design: Tables for the main modules (e.g., finance, inventory, sales) will be established, foreign keys will be used to link tables to each other and indexes will be created so data can be searched efficiently.
+4.4.3 Hardware Requirement
+Since the system will be cloud-based, there is no hardware requirement. But businesses will need:
+•	Desktops/Laptops: To use the ERP system.
+•	Tablets/Smart phones: For mobility and remote access.
+•	Internet: To access cloud services.
+4.4.4 Network Requirements
+The ERP system will require:
+Internet connectivity with security measures.
+•	VPN (Virtual Private Network) to ensure secure connections, particularly when dealing with confidential data.
+•	Encrypted data: Communication between the ERP system and Power BI will be encrypted using SSL/TLS.
+4.5	Data Analysis with Power BI
+
+Data analysis and reporting in the ERP system will be carried out by Power BI. This will be integrated with the ERP system to give users real-time information to support their decision-making.
+
+ 
+
+4.5.1	Data Visualization
+Dashboards: Power BI will develop dashboards that display the key performance indicators (KPIs) of sales, inventory, finance and customer satisfaction.
+Reports: Reports can be developed for users to see detailed data on a specific business process. For example, a sales report will show specific data on sales by geographic location or product line.
+ 
+
+Trend Analysis: The advanced data analytics tools in Power BI will be used to predict trends for inventory needs, revenue and so on.
+
+4.5.2 Data Integration
+ERP Data: Power BI will mainly connect with the ERP system. Power BI will connect to various ERP modules (such as sales, inventory, finance) and analyse the data.
+Other Data Sources: Power BI can also be used to integrate with other data sources, such as customer relationship management (CRM) data, social media, and other databases, to provide a more comprehensive view of the business.
+
+4.5.2	Real-Time Reporting
+Realtime reports will be generated using Power BI. This will be particularly valuable to SMEs as they need feedback on stock levels, sales and cash flow.
+ 
+4.6	Network and Security
+We will observe best practices in terms of security and performance of the ERP system:
+Secure Hosting: ERP system will be hosted securely in cloud platforms such as Amazon Web Services (AWS) or Microsoft Azure with security features such as encryption, firewalls, DDoS protection etc.
+Encrypted Data: We will ensure data (financial, personal, etc.) is encrypted while in transit and at rest.
+Access Control: Role-based access control (RBAC) will be set up to limit the access of some data and feature.
+ 
+Conclusion
+In chapter 4, the design strategy, development methodology and system requirements for SMEs ERP system have been discussed. Through the implementation of a cloud-based ERP system with the integration of Power BI, SMEs will be able to enhance their business performance through real-time data analytics and data-driven decision making. The project schedule, development approach, and system requirements outlined ensure that the ERP system will be tailored to the requirements of the SMEs, while being scalable, secure and affordable.
+
+
+
+
+
+
+
+
+
+
+Chapter 5: Implementation and Operational Plan
+5.1 Implementation
+The deployment of an ERP system is a complicated process that requires effort, time and money. Let's review the steps needed to implement the ERP system, and to integrate with Power BI
+5.1.1 Client Implementation Requirements
+Before installing the system, it is critical to ensure that the organisation is prepared and that the necessary hardware, software and resources are in place. The following steps should be considered:
+System Setup: Configure the ERP system according to the SME's needs. These include roles and permissions, modules and processes.
+Database Setup: Set up the database to handle the volume of data the ERP system will need to process including data storage, backup and restore procedures.
+Power BI Data Connections: Set up Power BI connections. This includes connecting the ERP data sources to Power BI for reporting. Also, configure dashboards and reports for users to access for real-time analytics.
+Hardware and Software: Ensure availability of hardware and software. This may include server specifications for the cloud ERP system and end user devices including desktop, laptop and mobile devices.
+5.1.2 Testing
+Before the ERP system is implemented, it should be tested to ensure that it is functioning properly and meeting business needs.
+Unit Testing: Test the individual components and functions of the ERP system to ensure they are working properly.
+Integration Testing: Test the connections between different components of the ERP system (inventories, sales, finance) and check the data flow.
+User Acceptance Testing (UAT): The system will be tested by the users (employees, managers) to make sure that it is usable. This is a critical testing phase, as end-users will discover bugs that might have been missed in earlier tests.
+Power BI Testing: Test the integration with Power BI, check if the data is flowing, the reports are correct and the dashboards are useful. Users should be able to interact with reports and get real-time data.
+5.1.3 Data Conversion and Cleansing Plan
+Many companies with legacy systems will need to migrate data to their new ERP system. This has to be done carefully to avoid losing data or corrupting data.
+Mapping Data: Map the fields of the old system to the new ERP system.
+Data Cleansing: Data needs to be cleansed before it is imported into the ERP system. This involves checking for duplicates, corrupt data and the data format.
+Data Migration: Data can be transferred from the old system to the new ERP system using tools or scripts, and tested.
+5.1.4 User Evaluation
+When the system is operational, it is important to evaluate user experiences with the new system. This step involves:
+•	Getting feedback from users on the system.
+•	Getting feedback about the efficiency and efficacy of the ERP system in workflow.
+•	Understanding any problems or difficulties faced by users, particularly in using the Power BI dashboard.
+5.1.5 User Training Plan
+Training is a critical component of ERP. Without proper training, staff could become confused and frustrated with the new system.
+Training Sessions: Conduct training for all ERP users.
+These should cover:
+•	How to use the system and its features.
+•	How to manage areas of interest (inventory, finance, sales).
+•	How to read your Power BI reports.
+•	User Manuals: Provide manuals, videos and tutorials.
+•	Support Channels: Set up a help desk or support team to address post-training questions.
+5.2 Operational Plan
+Once the ERP system is implemented, its successful operation is essential. This chapter will discuss the post-implementation operational plan, such as system support and maintenance, disaster recovery plan, etc.
+5.2.1 Installation and Support
+Software Upgrades: Regular upgrades will be required to improve the system, repair bugs and provide new features. It is important to ensure these are installed on a regular basis to keep the system secure and efficient.
+Technical Support: Have a technical support team to troubleshoot system issues. This may be via email, phone or online chat.
+Maintenance Schedule: Schedule maintenance to monitor the system performance, resolve problems and maintain uptime.
+5.2.2 Backup and Disaster Recovery
+ERP systems are used to store business data, and it is essential to have a disaster recovery plan to recover the system.
+Backup Plan: Regularly back up the ERP system database (e.g., daily or weekly) and store in a secure location (e.g., cloud, other servers).
+Recovery Time Objective (RTO): Develop a plan for recovering the system in the case of disaster (e.g., server crash, hacking attack).
+Recovery Point Objective (RPO): Determine the amount of data (e.g., 24 hours of transactions) that can be lost without problems. RPO is the data that can be lost in a disaster.
+
+5.2.3 Maintenance and Operations Plan
+The maintenance and operation of the ERP system ensures its smooth operation.
+Performance Monitoring: Ensure system performance (e.g., database load time, server uptime) is regularly monitored to ensure optimal system performance. Performance monitoring applications like Power BI can show the performance of the ERP system itself, with downtime, usage and issues.
+Feedback and Updates: After the system has been implemented, it is important to collect feedback from the users and make the necessary modifications. Regular user meetings will ensure problems are detected early and updates made as required.
+Scalability: As the business grows, the ERP system will need to be scalable to support an increase in transactions, users and data. This includes upgrading the system, load balancing and tuning.
+Conclusion
+The implementation and operational plans outlined in this chapter will be crucial to the success of the ERP system. With thorough testing, training and support, SMEs will be able to get the most out of their new ERP system. Additionally, a comprehensive operational plan that includes system upgrades, disaster recovery and monitoring of system performance will ensure the system is efficient, secure and meets business needs.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Chapter 6: Conclusion and Critical Evaluation
+In this chapter we will summarise the research findings and evaluate the uptake of Business Information Systems (BIS) including Enterprise Resource Planning (ERP) systems with Power BI in small and medium-sized enterprises (SMEs). It also assesses the research's strengths, limitations and weaknesses and provides recommendations for future work and how the system can be better integrated.
+6.1 Conclusion and Recommendations
+Enterprise Resource Planning (ERP) systems have revolutionised SMEs by helping them streamline operations, better manage information and improve decision making. We have discussed the challenges and benefits of ERP systems implementation, focusing on how SMEs can leverage cloud-based ERP systems with Power BI to improve business intelligence and reporting.
+Key Findings:
+ERP Systems for SMEs:
+Enterprise resource planning (ERP) systems offer an integrated approach to managing core business processes such as stock control, financial reporting, customer relationship management (CRM) and sales forecasting.
+SMEs can use cloud-based ERP systems to meet their changing needs, as they are flexible, scalable and cost-effective.
+Combining ERP systems with Power BI provides access to real-time information for reporting and analysis to enhance efficiency and productivity.
+Challenges in ERP Adoption:
+Cost: The initial cost of ERP solutions (software, installation, customisation and training) may be too high for SMEs.
+Change Management: Resistance to new software from the user (employees and managers) can be a challenge, especially when transitioning from manual processes and systems to computerised ERP systems.
+Technical Skills: SMEs may lack technical expertise to use the system.
+Feasibility of ERP Implementation:
+The quantitative feasibility of ERP systems shows a high return on investment (ROI), with the increase in productivity, cost and data accuracy within a year of the installation of an ERP system.
+Intangible benefits, like improved customer satisfaction, data availability and business intelligence, have been found to be in line with the corporate and strategic goals of SMEs.
+Power BI as a Value-Adding Tool:
+Data-visualization and reporting capabilities of Power BI enhance the ERP. This includes interactive reports and real-time analytics, enabling SMEs to track key performance indicators, trends and inform business decisions.
+Recommendations for SMEs:
+Use of Cloud ERP Systems: SMEs should consider implementing cloud ERP systems like SAP Business One and Microsoft Dynamics 365 which are flexible and cost-effective.
+Train Employees: To overcome the fear of change and to ensure the acceptance of the new system, SME's should also train their employees in the ERP system and Power BI. This will allow them to utilise the full potential of the system.
+Make Decisions Based on Data: Integration of Power BI with ERP system will allow SMEs to track their business performance in real-time. This will help make faster, more accurate decisions, which will provide them with a competitive edge, through the use of data analytics and business intelligence.
+Future Research Directions:
+•	Future research would focus on integrating AI within ERP systems, especially in predictive analytics and decision-making processes in SMEs.
+•	Research on ERP success stories in SMEs across different industries could provide insights into best practice and lessons learned.
+•	Research on ERP customisation for specific SME sectors such as manufacturing, retail or services would also give insights into how ERP systems can be tailored to different sectors.
+6.2 Critical Evaluation
+This study has examined the usage of ERP systems and its integration with Power BI in SMEs. However, there are a few things that can be improved upon in the future.
+1.	Strengths:
+Comprehensive Approach: The research included theory of ERP systems and practical insights into the benefits of ERP systems for SMEs, and data analytics using Power BI.
+Case Studies: This study presented case studies of SMEs that have adopted ERP systems, providing a perspective on the issues and advantages of ERP systems.
+Data Visualization: The use of Power BI in this research in conjunction with the ERP system demonstrated the importance of data analytics and data visualization in decision making.
+2.	Weaknesses and Limitations:
+Lack of Primary Data: This study used secondary data (from literature, reports and case studies). Primary data (surveys, interviews) from SMEs may have provided more information on the problems that SMEs face in implementing ERP.
+Lack of SME Sector-Specificity: The research did not consider the diversity of SMEs. Different sectors (e.g., manufacturing and services) may have distinct benefits and challenges associated with ERP.
+Geographical Focus: The study mainly focused on world problems and ignored regional variations in ERP implementation, e.g., in emerging markets, or cultures.
+3.	Opportunities for Improvement:
+Further research could be done on the issue of ERP adoption, examining a broader range of SMEs in various industries and geographical regions.
+The long-term impact of ERP systems on SMEs could also be explored, looking at the payback period, post-implementation employee and customer satisfaction.
+Integration with other technologies: The integration of artificial intelligence, internet of things (IoT) and big data with ERP systems could be another focus for future research, particularly with regards to predictive analysis and automation for SMEs.
+The integration of ERP with Power BI in SMEs can enhance efficiency, effectiveness and performance. While the initial cost, resistance to change and lack of technical expertise are challenges, there are many long-term advantages for SMEs in adopting the latest ERP systems. This research has shown that effective planning and implementation of ERP systems and using data analytics tools like Power BI in decision-making are crucial.
+Finally, organisations embracing ERP systems and data analytics will have a competitive advantage in today's ever-changing business environment, which will enable growth and success.
