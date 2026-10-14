@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load erp %}
+{% block content %}
+<div class="page-header">
+  <h1>{{ title }}</h1>
+  <div class="d-flex gap-2 flex-wrap">
+    {% block detail_actions %}{% endblock %}
+    {% if update_url %}<a class="btn btn-outline-primary btn-sm" href="{{ update_url }}"><i class="bi bi-pencil"></i> Edit</a>{% endif %}
+    {% if delete_url %}<a class="btn btn-outline-danger btn-sm" href="{{ delete_url }}"><i class="bi bi-trash"></i> Delete</a>{% endif %}
+    {% if list_url %}<a class="btn btn-link btn-sm" href="{{ list_url }}"><i class="bi bi-arrow-left"></i> Back to list</a>{% endif %}
+  </div>
+</div>
+{% if fields %}
+<div class="card mb-3">
+  <div class="card-body">
+    <dl class="row mb-0">
+      {% for attr, label in fields %}
+        <dt class="col-sm-4 col-lg-3 text-muted fw-normal">{{ label }}</dt>
+        <dd class="col-sm-8 col-lg-9">{% cell object attr %}</dd>
+      {% endfor %}
+    </dl>
+  </div>
+</div>
+{% endif %}
+{% if extra_template %}{% include extra_template %}{% endif %}
+{% block detail_extra %}{% endblock %}
+{% endblock %}

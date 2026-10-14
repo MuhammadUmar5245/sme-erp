@@ -1,0 +1,73 @@
+/* SME-ERP theme. Colours are shared with the Power BI theme (docs/powerbi/sme_erp_theme.json). */
+:root {
+  --erp-primary: #0f4c5c;
+  --erp-primary-dark: #0a3540;
+  --erp-accent: #e36414;
+  --erp-success: #2a9d8f;
+  --erp-warning: #e9c46a;
+  --erp-danger: #c0392b;
+  --erp-bg: #f4f6f8;
+  --erp-sidebar-width: 250px;
+  --bs-primary: #0f4c5c;
+  --bs-primary-rgb: 15, 76, 92;
+  --bs-link-color: #0f4c5c;
+  --bs-link-color-rgb: 15, 76, 92;
+}
+
+body { background: var(--erp-bg); font-size: 0.925rem; }
+
+.btn-primary { --bs-btn-bg: var(--erp-primary); --bs-btn-border-color: var(--erp-primary);
+  --bs-btn-hover-bg: var(--erp-primary-dark); --bs-btn-hover-border-color: var(--erp-primary-dark);
+  --bs-btn-active-bg: var(--erp-primary-dark); }
+.btn-outline-primary { --bs-btn-color: var(--erp-primary); --bs-btn-border-color: var(--erp-primary);
+  --bs-btn-hover-bg: var(--erp-primary); --bs-btn-hover-border-color: var(--erp-primary); }
+.text-bg-primary { background-color: var(--erp-primary) !important; }
+
+.topbar { background: var(--erp-primary); min-height: 56px; box-shadow: 0 2px 4px rgba(0,0,0,.15); z-index: 1040; }
+
+.app-shell { min-height: calc(100vh - 56px); }
+
+.sidebar { background: #fff; border-right: 1px solid #dee2e6; }
+@media (min-width: 992px) {
+  .sidebar { width: var(--erp-sidebar-width); flex-shrink: 0; position: sticky; top: 56px;
+    height: calc(100vh - 56px); overflow-y: auto; }
+}
+.nav-section-title { display: flex; align-items: center; gap: .6rem; padding: .55rem 1rem; color: #344;
+  font-weight: 600; text-decoration: none; font-size: .85rem; text-transform: uppercase; letter-spacing: .03em; }
+.nav-section-title:hover { background: #eef3f4; color: var(--erp-primary); }
+.nav-section-title .chevron { transition: transform .2s; font-size: .75rem; }
+.nav-section-title.collapsed .chevron { transform: rotate(-90deg); }
+.sidebar .nav-link { padding: .35rem 1rem .35rem 2.6rem; color: #555; border-left: 3px solid transparent; }
+.sidebar .nav-link:hover { background: #f1f5f6; color: var(--erp-primary); }
+.sidebar .nav-link.active { color: var(--erp-primary); font-weight: 600; border-left-color: var(--erp-accent); background: #eaf2f3; }
+
+.content { min-width: 0; }
+.page-header { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.page-header h1 { font-size: 1.4rem; margin: 0; color: var(--erp-primary-dark); }
+
+.card { border: 0; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.card-header { background: #fff; font-weight: 600; }
+
+.kpi-card { border-left: 4px solid var(--erp-primary); }
+.kpi-card.accent { border-left-color: var(--erp-accent); }
+.kpi-card.success { border-left-color: var(--erp-success); }
+.kpi-card.danger { border-left-color: var(--erp-danger); }
+.kpi-card .kpi-label { font-size: .75rem; text-transform: uppercase; color: #6c757d; letter-spacing: .04em; }
+.kpi-card .kpi-value { font-size: 1.45rem; font-weight: 700; color: #1d2b33; }
+
+.table thead th { font-size: .78rem; text-transform: uppercase; color: #5b6770; background: #f8fafb; white-space: nowrap; }
+.table td { vertical-align: middle; }
+.table-sm td, .table-sm th { padding: .4rem .5rem; }
+
+.auth-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--erp-primary) 0%, #1b6f80 60%, var(--erp-accent) 140%); padding: 1rem; }
+.auth-card { width: 100%; max-width: 420px; }
+
+.htmx-indicator { opacity: 0; transition: opacity .2s; }
+.htmx-request .htmx-indicator, .htmx-request.htmx-indicator { opacity: 1; }
+
+.chart-box { position: relative; height: 300px; }
+@media (max-width: 576px) {
+  .kpi-card .kpi-value { font-size: 1.15rem; }
+  .chart-box { height: 240px; }
+}

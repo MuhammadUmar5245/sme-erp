@@ -1,0 +1,10 @@
+.git
+.env
+certs
+backups
+media
+staticfiles
+**/__pycache__
+.pytest_cache
+htmlcov
+.coverage

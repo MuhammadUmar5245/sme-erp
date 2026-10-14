@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header">
+  <h1>{{ title }}</h1>
+  <div class="d-flex gap-2 flex-wrap">
+    {% block list_actions %}{% endblock %}
+    {% if create_url %}<a class="btn btn-primary btn-sm" href="{{ create_url }}"><i class="bi bi-plus-lg"></i> New {{ model_name }}</a>{% endif %}
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body py-2">
+    <form method="get" class="row g-2 align-items-end" id="list-filters"
+          hx-get="{{ request.path }}" hx-target="#list-table" hx-swap="outerHTML" hx-push-url="true"
+          hx-trigger="submit, keyup changed delay:350ms from:#id_q, change from:select">
+      {% if search_enabled %}
+      <div class="col-12 col-md-4">
+        <label class="form-label small mb-1" for="id_q">Search</label>
+        <input type="search" class="form-control form-control-sm" id="id_q" name="q" value="{{ query }}" placeholder="{{ search_placeholder }}">
+      </div>
+      {% endif %}
+      {% if filter_form %}
+        {% for field in filter_form %}
+        <div class="col-6 col-md-2">
+          <label class="form-label small mb-1" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+        </div>
+        {% endfor %}
+      {% endif %}
+      <div class="col-auto">
+        <button class="btn btn-outline-primary btn-sm" type="submit"><i class="bi bi-funnel"></i> Apply</button>
+        <a class="btn btn-link btn-sm" href="{{ request.path }}">Reset</a>
+        <span class="spinner-border spinner-border-sm htmx-indicator text-primary" role="status"></span>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% block before_table %}{% endblock %}
+{% include "core/partials/list_table.html" %}
+{% endblock %}

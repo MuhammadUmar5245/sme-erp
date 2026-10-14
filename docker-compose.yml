@@ -1,0 +1,86 @@
+# SME-ERP stack: certs (one-shot) -> db (PostgreSQL 16 + SSL) -> web (Django/gunicorn) -> nginx (TLS).
+name: sme-erp
+
+services:
+  certs:
+    image: postgres:16
+    entrypoint: ["sh", "/scripts/gen_cert.sh", "/certs"]
+    volumes:
+      - ./certs:/certs
+      - ./scripts:/scripts:ro
+    restart: "no"
+
+  db:
+    image: postgres:16
+    env_file: .env
+    environment:
+      TZ: Asia/Muscat
+      PGTZ: Asia/Muscat
+    # Copy the certificate into a postgres-owned location (key must be 0600) and enable SSL so
+    # Power BI connections are encrypted in transit.
+    command:
+      - bash
+      - -c
+      - >-
+        cp /certs/server.crt /certs/server.key /var/lib/postgresql/ &&
+        chown postgres:postgres /var/lib/postgresql/server.crt /var/lib/postgresql/server.key &&
+        chmod 600 /var/lib/postgresql/server.key &&
+        exec docker-entrypoint.sh postgres -c ssl=on
+        -c ssl_cert_file=/var/lib/postgresql/server.crt
+        -c ssl_key_file=/var/lib/postgresql/server.key
+        -c log_min_duration_statement=1000
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./certs:/certs:ro
+    ports:
+      - "${DB_HOST_PORT:-5432}:5432"
+    depends_on:
+      certs:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
+    image: sme-erp-web
+    env_file: .env
+    environment:
+      TZ: Asia/Muscat
+    volumes:
+      - .:/app
+      - backups:/backups:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:8000/health/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.27-alpine
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+    depends_on:
+      certs:
+        condition: service_completed_successfully
+      web:
+        condition: service_started
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  backups:

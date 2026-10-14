@@ -1,0 +1,42 @@
+{% load erp %}
+<div id="list-table" class="card">
+  <div class="card-header d-flex justify-content-between small">
+    <span>{{ total_count }} record{{ total_count|pluralize }}</span>
+    {% if page_obj %}<span class="text-muted">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>{% endif %}
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover table-sm mb-0">
+      <thead>
+        <tr>{% for attr, label in columns %}<th>{{ label }}</th>{% endfor %}</tr>
+      </thead>
+      <tbody>
+      {% for obj in object_list %}
+        <tr>
+          {% for attr, label in columns %}
+            <td>{% if forloop.first and detail_url_name %}<a class="fw-semibold" href="{% detail_url detail_url_name obj.pk %}">{% cell obj attr %}</a>{% else %}{% cell obj attr %}{% endif %}</td>
+          {% endfor %}
+        </tr>
+      {% empty %}
+        <tr><td colspan="{{ columns|length }}" class="text-center text-muted py-4">No records found.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if is_paginated %}
+  <div class="card-footer bg-white">
+    <nav aria-label="Pagination">
+      <ul class="pagination pagination-sm mb-0 flex-wrap">
+        {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?{{ querystring }}&page=1">&laquo;</a></li>
+          <li class="page-item"><a class="page-link" href="?{{ querystring }}&page={{ page_obj.previous_page_number }}">Previous</a></li>
+        {% endif %}
+        <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+        {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?{{ querystring }}&page={{ page_obj.next_page_number }}">Next</a></li>
+          <li class="page-item"><a class="page-link" href="?{{ querystring }}&page={{ page_obj.paginator.num_pages }}">&raquo;</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+  {% endif %}
+</div>
