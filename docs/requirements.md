@@ -27,6 +27,11 @@ implements it, and the automated tests / UAT cases that verify it.
 | FR-18 | Expenses with input VAT; VAT return summary (output − input, 5%) | 3.5.1 | finance | `test_expense_posts_vat_input_and_bank`, `test_vat_return_nets_output_and_input` |
 | FR-19 | AR aging, AP aging, trial balance and profit & loss reports (UI and API) | 3.5.1 | finance | `test_trial_balance_balances_and_pnl`, `test_financial_report_endpoints` |
 | FR-20 | HR: departments, employees, leave requests with approval workflow (Fri–Sat weekend excluded, balance checks, no self-approval) | 1.3.1 | hr | `hr/tests/test_services.py`, `test_leave_approval_ui` |
+| FR-21 | PostgreSQL schema `reporting` with star-schema views: dim_date (2024–2027, Oman weekend/Ramadan/Eid/Khareef flags), dim_product, dim_customer, dim_supplier, dim_employee, dim_warehouse, fact_sales, fact_purchases, fact_inventory_daily, fact_payments, fact_expenses, fact_feedback (+ fact_interactions, fact_receivables) | 4.4.1, 4.5.2 | reports | `reports/tests/test_reporting.py` |
+| FR-22 | Read-only PostgreSQL role `powerbi_reader` with SELECT on schema `reporting` only | 4.6, 5.1.1 | reports (migration + `setup_powerbi_reader`) | `test_powerbi_reader_is_read_only_on_reporting_schema` |
+| FR-23 | RESTful reporting API for Power BI's Web connector (`/api/v1/reports/…`): token auth, date-range filters, pagination | 4.4.1, 4.5.2 | reports | `test_reporting_api_requires_permission_and_supports_token`, `test_every_reporting_endpoint_responds` |
+| FR-24 | In-app dashboard: KPIs (revenue MTD/YTD, gross margin %, receivables, low-stock count, average CSAT) and charts (monthly sales, top 10 products, sales by city, cash in vs out) | 3.5.1, 4.5.1 | reports | `test_kpis`, `test_dashboard_charts`, `test_dashboard_and_builder_pages` |
+| FR-25 | Custom report builder: dataset, date range, group-by, filters, preview; export to CSV, Excel and PDF | 3.5.1 | reports | `test_report_builder_groups_and_filters`, `test_exports` |
 
 ## Non-functional requirements
 

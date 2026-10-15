@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load erp %}
+{% block content %}
+<div class="page-header">
+  <h1>Report builder</h1>
+  {% if report %}
+  <div class="btn-group btn-group-sm">
+    <a class="btn btn-outline-primary" href="{% url 'reports:export' 'csv' %}?{{ querystring }}"><i class="bi bi-filetype-csv"></i> CSV</a>
+    <a class="btn btn-outline-primary" href="{% url 'reports:export' 'xlsx' %}?{{ querystring }}"><i class="bi bi-file-earmark-excel"></i> Excel</a>
+    <a class="btn btn-outline-primary" href="{% url 'reports:export' 'pdf' %}?{{ querystring }}"><i class="bi bi-file-earmark-pdf"></i> PDF</a>
+  </div>
+  {% endif %}
+</div>
+<form method="get" class="card mb-3" id="builder-form">
+  <div class="card-body row g-3">
+    <div class="col-12 col-md-4">
+      <label class="form-label">Dataset</label>
+      <select name="dataset" class="form-select" onchange="this.form.querySelectorAll('[name=group_by] option').forEach(o => o.selected=false); this.form.submit()">
+        {% for value, label in form.fields.dataset.choices %}<option value="{{ value }}" {% if form.dataset.value == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="col-6 col-md-2"><label class="form-label">{{ form.date_from.label }}</label>{{ form.date_from }}</div>
+    <div class="col-6 col-md-2"><label class="form-label">{{ form.date_to.label }}</label>{{ form.date_to }}</div>
+    <div class="col-12 col-md-4"><label class="form-label">Group by</label>{{ form.group_by }}<div class="form-text">{{ form.group_by.help_text }}</div></div>
+    {% for field in form %}{% if field.name|slice:":2" == "f_" %}
+      <div class="col-6 col-md-3"><label class="form-label">{{ field.label }}</label>{{ field }}</div>
+    {% endif %}{% endfor %}
+    <div class="col-12"><button class="btn btn-primary"><i class="bi bi-play-fill"></i> Run report</button></div>
+  </div>
+</form>
+{% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+{% if form.errors %}<div class="alert alert-danger small">{% for f, e in form.errors.items %}{{ f }}: {{ e|join:" " }} {% endfor %}</div>{% endif %}
+{% if report %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between small"><span>{{ report.title }} · {{ report.date_from|date:"d M Y" }} – {{ report.date_to|date:"d M Y" }}</span><span>{{ report.rows|length }} row{{ report.rows|length|pluralize }}{% if report.rows|length > 200 %} (preview shows 200){% endif %}</span></div>
+  <div class="table-responsive"><table class="table table-sm table-hover mb-0">
+    <thead><tr>{% for h in report.headers %}<th class="{% if forloop.counter > report.dimension_count %}text-end{% endif %}">{{ h }}</th>{% endfor %}</tr></thead>
+    <tbody>{% for row in preview %}<tr>{% for v in row %}<td class="{% if forloop.counter > report.dimension_count %}text-end font-monospace{% endif %}">{% if forloop.counter > report.dimension_count %}{{ v|floatformat:"-3g"|default:"0" }}{% else %}{{ v|default:"-" }}{% endif %}</td>{% endfor %}</tr>
+    {% empty %}<tr><td colspan="{{ report.headers|length }}" class="text-center text-muted py-4">No data for the selected period.</td></tr>{% endfor %}</tbody>
+  </table></div>
+</div>
+{% endif %}
+{% endblock %}

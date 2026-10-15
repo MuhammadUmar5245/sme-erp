@@ -1,0 +1,9 @@
+{% load erp %}
+<div class="row g-3 mb-3">
+  <div class="col-6 col-lg-4 col-xxl-2"><div class="card kpi-card h-100"><div class="card-body"><div class="kpi-label">Revenue MTD</div><div class="kpi-value">{{ kpis.revenue_mtd|money:0 }}</div><div class="small text-muted">Net of VAT and returns</div></div></div></div>
+  <div class="col-6 col-lg-4 col-xxl-2"><div class="card kpi-card h-100"><div class="card-body"><div class="kpi-label">Revenue YTD</div><div class="kpi-value">{{ kpis.revenue_ytd|money:0 }}</div><div class="small text-muted">Since 1 January</div></div></div></div>
+  <div class="col-6 col-lg-4 col-xxl-2"><div class="card kpi-card success h-100"><div class="card-body"><div class="kpi-label">Gross margin YTD</div><div class="kpi-value">{{ kpis.gross_margin_pct|pct }}</div><div class="small text-muted">Inventory value {{ kpis.inventory_value|money:0 }}</div></div></div></div>
+  <div class="col-6 col-lg-4 col-xxl-2"><div class="card kpi-card accent h-100"><div class="card-body"><div class="kpi-label">Receivables</div><div class="kpi-value">{{ kpis.outstanding_receivables|money:0 }}</div><div class="small text-danger">Overdue {{ kpis.overdue_receivables|money:0 }}</div></div></div></div>
+  <div class="col-6 col-lg-4 col-xxl-2"><div class="card kpi-card danger h-100"><div class="card-body"><div class="kpi-label">Low-stock items</div><div class="kpi-value">{{ kpis.low_stock_count }}</div><div class="small text-muted">At or below reorder level</div></div></div></div>
+  <div class="col-6 col-lg-4 col-xxl-2"><div class="card kpi-card success h-100"><div class="card-body"><div class="kpi-label">Average CSAT</div><div class="kpi-value">{% if kpis.avg_csat %}{{ kpis.avg_csat|floatformat:2 }} / 5{% else %}–{% endif %}</div><div class="small text-muted">Last 12 months</div></div></div></div>
+</div>

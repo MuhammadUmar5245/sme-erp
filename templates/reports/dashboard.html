@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load erp %}
+{% block content %}
+<div class="page-header">
+  <h1>Analytics dashboard</h1>
+  <span class="text-muted small">Live from the ERP database · as of {{ kpis.as_of|date:"d M Y" }} · amounts in OMR</span>
+</div>
+{% include "reports/partials/kpi_cards.html" %}
+<div class="row g-3">
+  <div class="col-12 col-xl-8"><div class="card h-100"><div class="card-header">Monthly sales trend (net) and gross margin</div><div class="card-body"><div class="chart-box"><canvas id="chartSales"></canvas></div></div></div></div>
+  <div class="col-12 col-xl-4"><div class="card h-100"><div class="card-header">Sales by city (last 12 months)</div><div class="card-body"><div class="chart-box"><canvas id="chartCity"></canvas></div></div></div></div>
+  <div class="col-12 col-xl-6"><div class="card h-100"><div class="card-header">Top 10 products (last 12 months)</div><div class="card-body"><div class="chart-box"><canvas id="chartTop"></canvas></div></div></div></div>
+  <div class="col-12 col-xl-6"><div class="card h-100"><div class="card-header">Cash in vs cash out</div><div class="card-body"><div class="chart-box"><canvas id="chartCash"></canvas></div></div></div></div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+(function () {
+  const C = {primary: "#0f4c5c", accent: "#e36414", success: "#2a9d8f", warning: "#e9c46a", danger: "#c0392b",
+             palette: ["#0f4c5c", "#e36414", "#2a9d8f", "#e9c46a", "#5f0f40", "#9a031e", "#3a86ff", "#8d99ae", "#fb8b24", "#264653"]};
+  const omr = v => "OMR " + Number(v).toLocaleString("en-US", {maximumFractionDigits: 0});
+  const opts = (extra) => Object.assign({responsive: true, maintainAspectRatio: false,
+      plugins: {tooltip: {callbacks: {label: ctx => `${ctx.dataset.label || ctx.label}: ${omr(ctx.parsed.y ?? ctx.parsed.x ?? ctx.parsed)}`}}}}, extra || {});
+  fetch("{% url 'reports:dashboard_data' %}", {credentials: "same-origin"}).then(r => r.json()).then(d => {
+    new Chart(document.getElementById("chartSales"), {type: "bar", data: {labels: d.monthly_sales.labels, datasets: [
+      {label: "Net sales", data: d.monthly_sales.sales, backgroundColor: C.primary},
+      {label: "Gross margin", data: d.monthly_sales.margin, type: "line", borderColor: C.accent, backgroundColor: C.accent, tension: .3}]},
+      options: opts({scales: {y: {ticks: {callback: v => omr(v)}}}})});
+    new Chart(document.getElementById("chartCity"), {type: "doughnut", data: {labels: d.sales_by_city.labels,
+      datasets: [{data: d.sales_by_city.values, backgroundColor: C.palette}]},
+      options: opts({plugins: {legend: {position: "bottom"}, tooltip: {callbacks: {label: ctx => `${ctx.label}: ${omr(ctx.parsed)}`}}}})});
+    new Chart(document.getElementById("chartTop"), {type: "bar", data: {labels: d.top_products.labels,
+      datasets: [{label: "Net sales", data: d.top_products.values, backgroundColor: C.success}]},
+      options: opts({indexAxis: "y", plugins: {legend: {display: false}, tooltip: {callbacks: {label: ctx => omr(ctx.parsed.x)}}},
+                     scales: {x: {ticks: {callback: v => omr(v)}}}})});
+    new Chart(document.getElementById("chartCash"), {type: "bar", data: {labels: d.cash_flow.labels, datasets: [
+      {label: "Cash in", data: d.cash_flow.cash_in, backgroundColor: C.success},
+      {label: "Cash out", data: d.cash_flow.cash_out, backgroundColor: C.danger}]},
+      options: opts({scales: {y: {ticks: {callback: v => omr(v)}}}})});
+  });
+})();
+</script>
+{% endblock %}

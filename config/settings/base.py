@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "crm",
     "purchasing",
     "sales",
+    "reports",
 ]
 
 MIDDLEWARE = [

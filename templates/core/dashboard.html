@@ -7,21 +7,7 @@
   <span class="text-muted small">{% now "l, d F Y" %} · Asia/Muscat</span>
 </div>
 
-{% if kpis %}
-<div class="row g-3 mb-3">
-  {% for kpi in kpis %}
-  <div class="col-6 col-xl-3">
-    <div class="card kpi-card {{ kpi.style }} h-100">
-      <div class="card-body">
-        <div class="kpi-label">{{ kpi.label }}</div>
-        <div class="kpi-value">{{ kpi.value }}</div>
-        {% if kpi.hint %}<div class="small text-muted">{{ kpi.hint }}</div>{% endif %}
-      </div>
-    </div>
-  </div>
-  {% endfor %}
-</div>
-{% endif %}
+{% if kpis %}{% include "reports/partials/kpi_cards.html" %}{% endif %}
 
 <div class="row g-3">
   {% if low_stock is not None %}

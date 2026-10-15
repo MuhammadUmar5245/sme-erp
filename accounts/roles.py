@@ -123,6 +123,6 @@ ROLE_PERMISSIONS = {
         "crm": VIEW,
         "finance": VIEW,
         "hr.department": VIEW,
-        "extra": ["reports.view_dashboard"],
+        "extra": ["reports.view_dashboard", "reports.view_powerbi_api"],
     },
 }

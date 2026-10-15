@@ -8,6 +8,7 @@ from finance import api as finance_api
 from hr import api as hr_api
 from inventory import api as inventory_api
 from purchasing import api as purchasing_api
+from reports import api as reports_api
 from sales import api as sales_api
 
 router = DefaultRouter()
@@ -36,9 +37,14 @@ router.register("finance/expenses", finance_api.ExpenseViewSet, basename="expens
 router.register("hr/departments", hr_api.DepartmentViewSet, basename="department")
 router.register("hr/employees", hr_api.EmployeeViewSet, basename="employee")
 router.register("hr/leave-requests", hr_api.LeaveRequestViewSet, basename="leaverequest")
+# Power BI reporting datasets (read-only views of schema "reporting").
+for slug, viewset in reports_api.REPORTING_VIEWSETS.items():
+    router.register(f"reports/{slug}", viewset, basename=f"report-{slug}")
 
 urlpatterns = [
     path("auth/token/", accounts_api.ObtainTokenView.as_view(), name="api-token"),
+    path("reports/", reports_api.DatasetIndexView.as_view(), name="report-index"),
+    path("reports/kpis/", reports_api.KPIView.as_view(), name="report-kpis"),
     path("finance/reports/<slug:name>/", finance_api.FinancialReportView.as_view(), name="finance-report"),
     path("", include(router.urls)),
 ]
