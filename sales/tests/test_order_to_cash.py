@@ -148,3 +148,15 @@ def test_customer_outstanding(setup):
     invoice = services.create_invoice(customer, wh, [{"product": tea, "quantity": 5}])
     services.record_payment(invoice, Decimal("4.500"))
     assert services.customer_outstanding(customer) == Decimal("6.000")
+
+
+def test_update_draft_sales_order(setup):
+    wh, customer, tea, soap = setup
+    order = services.create_sales_order(customer, wh, [{"product": tea, "quantity": 1}])
+    services.update_sales_order(order, customer, wh, [{"product": soap, "quantity": 10}], notes="Changed")
+    order.refresh_from_db()
+    assert list(order.lines.values_list("product", flat=True)) == [soap.pk]
+    assert order.subtotal == Decimal("9.000")
+    services.confirm_sales_order(order)
+    with pytest.raises(services.SalesError):
+        services.update_sales_order(order, customer, wh, [{"product": tea, "quantity": 1}])

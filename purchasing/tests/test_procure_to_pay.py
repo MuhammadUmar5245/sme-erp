@@ -133,3 +133,17 @@ def test_empty_or_invalid_orders_rejected(setup):
         services.create_purchase_order(supplier, wh, [])
     with pytest.raises(services.PurchasingError):
         services.create_purchase_order(supplier, wh, [{"product": rice, "quantity": 0}])
+
+
+def test_update_draft_purchase_order(setup):
+    supplier, wh, rice, oil, order = setup
+    other = SupplierFactory()
+    services.update_purchase_order(order, other, wh, [{"product": oil, "quantity": 10, "unit_cost": "1.000"}],
+                                   notes="Revised")
+    order.refresh_from_db()
+    assert order.supplier == other and order.lines.count() == 1 and order.subtotal == Decimal("10.000")
+    with pytest.raises(services.PurchasingError):
+        services.update_purchase_order(order, other, wh, [])
+    services.approve_purchase_order(order)
+    with pytest.raises(services.PurchasingError):
+        services.update_purchase_order(order, other, wh, [{"product": oil, "quantity": 1}])

@@ -19,3 +19,5 @@ backups/
 # OS / editor
 .DS_Store
 Thumbs.db
+coverage.xml
+scratch_*.py

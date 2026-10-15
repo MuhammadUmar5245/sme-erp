@@ -33,7 +33,8 @@ seed: env
 	$(RUN) python manage.py seed_demo --reset
 
 test: env
-	$(RUN) pytest
+	$(RUN) pytest --cov --cov-report=term --cov-report=html --cov-report=xml
+	$(RUN) coverage report --include='*/services.py,*/cleansing.py,*/importers.py,*/builder.py,*/audit.py' --fail-under=80
 
 shell: env
 	$(RUN) python manage.py shell

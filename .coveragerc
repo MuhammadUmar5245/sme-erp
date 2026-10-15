@@ -1,0 +1,27 @@
+[run]
+source = .
+branch = True
+omit =
+    */migrations/*
+    */tests/*
+    conftest.py
+    manage.py
+    config/asgi.py
+    config/wsgi.py
+    config/settings/dev.py
+    config/settings/prod.py
+    scripts/*
+    sample_data/*
+    loadtest/*
+
+[report]
+show_missing = True
+skip_covered = True
+precision = 1
+exclude_lines =
+    pragma: no cover
+    raise NotImplementedError
+    if __name__ == .__main__.:
+
+[html]
+directory = htmlcov

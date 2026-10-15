@@ -24,7 +24,11 @@ switch ($Target) {
     "migrate"        { Ensure-Env; Run @("docker", "compose", "run", "--rm", "web", "python", "manage.py", "migrate") }
     "makemigrations" { Ensure-Env; Run @("docker", "compose", "run", "--rm", "web", "python", "manage.py", "makemigrations") }
     "seed"           { Ensure-Env; Run @("docker", "compose", "run", "--rm", "web", "python", "manage.py", "seed_demo", "--reset") }
-    "test"           { Ensure-Env; Run @("docker", "compose", "run", "--rm", "web", "pytest") }
+    "test"           {
+        Ensure-Env
+        Run @("docker", "compose", "run", "--rm", "web", "pytest", "--cov", "--cov-report=term", "--cov-report=html", "--cov-report=xml")
+        Run @("docker", "compose", "run", "--rm", "web", "coverage", "report", "--include=*/services.py,*/cleansing.py,*/importers.py,*/builder.py,*/audit.py", "--fail-under=80")
+    }
     "shell"          { Ensure-Env; Run @("docker", "compose", "run", "--rm", "web", "python", "manage.py", "shell") }
     "createsuperuser"{ Ensure-Env; Run @("docker", "compose", "run", "--rm", "web", "python", "manage.py", "createsuperuser") }
     "cert"           { Run @("docker", "compose", "run", "--rm", "-e", "FORCE=1", "certs") }
