@@ -1,0 +1,11 @@
+{% extends "core/generic_detail.html" %}
+{% load erp %}
+{% block detail_extra %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between"><span>Leave</span><span>Annual leave balance: <strong>{{ leave_balance|floatformat:1 }}</strong> days</span></div>
+  <div class="table-responsive"><table class="table table-sm mb-0"><tbody>
+  {% for l in leave_requests %}<tr><td><a href="{% url 'hr:leave_detail' l.pk %}">{{ l.get_leave_type_display }}</a></td><td>{{ l.start_date|date:"d M Y" }} – {{ l.end_date|date:"d M Y" }}</td><td>{{ l.days|floatformat:0 }} d</td><td>{% status_badge l.status l.get_status_display %}</td></tr>
+  {% empty %}<tr><td class="text-muted text-center py-3">No leave requests.</td></tr>{% endfor %}
+  </tbody></table></div>
+</div>
+{% endblock %}

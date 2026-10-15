@@ -1,0 +1,15 @@
+{% extends "core/generic_detail.html" %}
+{% block detail_extra %}
+<div class="card" style="max-width:640px">
+  <div class="card-body">
+    <p class="mb-2">Employee's annual leave balance for {{ object.start_date.year }}: <strong>{{ balance|floatformat:1 }}</strong> days.</p>
+    {% if object.status == "PENDING" and perms.hr.approve_leaverequest %}
+    <form method="post" class="d-flex flex-wrap gap-2 align-items-end">{% csrf_token %}
+      <div class="flex-grow-1"><label class="form-label small">Note (optional)</label><input class="form-control form-control-sm" name="note" maxlength="200"></div>
+      <button class="btn btn-success btn-sm" formaction="{% url 'hr:leave_approve' object.pk %}"><i class="bi bi-check2"></i> Approve</button>
+      <button class="btn btn-outline-danger btn-sm" formaction="{% url 'hr:leave_reject' object.pk %}"><i class="bi bi-x"></i> Reject</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
