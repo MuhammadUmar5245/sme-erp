@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Account locked{% endblock %}
+{% block auth_content %}
+<div class="auth-wrapper">
+  <div class="card auth-card shadow-lg">
+    <div class="card-body p-4 p-md-5 text-center">
+      <i class="bi bi-lock-fill fs-1 text-danger"></i>
+      <h1 class="h4 mt-2">Account temporarily locked</h1>
+      <p class="text-muted">Too many failed sign-in attempts (5). Try again in 30 minutes or ask an administrator to unlock your account.</p>
+      <a class="btn btn-outline-primary" href="{% url 'accounts:login' %}">Back to sign in</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

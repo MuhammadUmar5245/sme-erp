@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header"><h1>Set up two-factor authentication</h1></div>
+<div class="row g-3">
+  <div class="col-12 col-lg-7">
+    <div class="card">
+      <div class="card-body">
+        {% if required %}
+          <div class="alert alert-warning small"><i class="bi bi-shield-exclamation"></i> Two-factor authentication is <strong>mandatory</strong> for your role. Finish enrolment to continue.</div>
+        {% endif %}
+        <ol class="small">
+          <li>Install Google Authenticator, Microsoft Authenticator or a similar app on your phone.</li>
+          <li>Scan the QR code (or type the key manually).</li>
+          <li>Enter the 6-digit code shown in the app.</li>
+        </ol>
+        <div class="text-center my-3"><div class="d-inline-block bg-white p-2 border rounded qr-box" style="max-width:240px">{{ qr_svg|safe }}</div></div>
+        <p class="small text-center text-muted">Manual key: <code class="user-select-all">{{ secret }}</code></p>
+        <form method="post" class="row g-2 justify-content-center">{% csrf_token %}
+          <input type="hidden" name="next" value="{{ next }}">
+          <div class="col-8 col-sm-5">{{ form.token }}{% for e in form.token.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}</div>
+          <div class="col-auto"><button class="btn btn-primary" type="submit">Verify &amp; activate</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<style>.qr-box svg{width:100%;height:auto}</style>
+{% endblock %}

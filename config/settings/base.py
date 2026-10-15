@@ -40,9 +40,13 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "django_filters",
     "drf_spectacular",
+    "django_otp",
+    "django_otp.plugins.otp_totp",
+    "axes",
     # SME-ERP modules
     "core",
     "accounts",
+    "hr",
 ]
 
 MIDDLEWARE = [
@@ -52,8 +56,13 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django_otp.middleware.OTPMiddleware",
+    "accounts.middleware.CurrentRequestMiddleware",
+    "accounts.middleware.TwoFactorEnforcementMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Must be last: login lockout after repeated failures.
+    "axes.middleware.AxesMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -94,6 +103,42 @@ AUTH_USER_MODEL = "accounts.User"
 LOGIN_URL = "accounts:login"
 LOGIN_REDIRECT_URL = "core:dashboard"
 LOGOUT_REDIRECT_URL = "accounts:login"
+
+AUTHENTICATION_BACKENDS = [
+    "axes.backends.AxesStandaloneBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+# django-axes: lock an account for 30 minutes after 5 failed logins.
+AXES_FAILURE_LIMIT = 5
+AXES_COOLOFF_TIME = 0.5  # hours
+AXES_LOCKOUT_PARAMETERS = ["username"]
+AXES_RESET_ON_SUCCESS = True
+AXES_USERNAME_FORM_FIELD = "username"
+AXES_LOCKOUT_TEMPLATE = "accounts/locked_out.html"
+AXES_CLIENT_IP_CALLABLE = "accounts.middleware.get_client_ip"
+AXES_VERBOSE = False
+# Lockout is per account (not per IP) so one person's typos cannot lock out a whole office behind NAT.
+SILENCED_SYSTEM_CHECKS = ["axes.W006"]
+
+# django-otp (TOTP). Issuer shown in authenticator apps.
+OTP_TOTP_ISSUER = "SME-ERP Al Wadi"
+
+# Apps whose model changes are written to the audit log.
+AUDIT_LOG_APPS = [
+    "accounts",
+    "hr",
+    "inventory",
+    "purchasing",
+    "sales",
+    "crm",
+    "finance",
+    "integrations",
+    "feasibility",
+    "auth",
+]
+# Field-level encryption key for sensitive data at rest (Fernet, see .env.example).
+FIELD_ENCRYPTION_KEY = env("FIELD_ENCRYPTION_KEY", default="")
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},

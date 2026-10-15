@@ -1,0 +1,40 @@
+{% extends "core/generic_detail.html" %}
+{% load erp %}
+{% block detail_extra %}
+<div class="row g-3">
+  <div class="col-12 col-lg-5">
+    <div class="card h-100">
+      <div class="card-header">Security</div>
+      <div class="card-body">
+        <p>2FA: {% if has_2fa %}<span class="badge text-bg-success">Enabled</span>{% else %}<span class="badge text-bg-secondary">Not enabled</span>{% endif %}
+           {% if object.requires_2fa %}<span class="badge text-bg-warning">Mandatory</span>{% endif %}</p>
+        <p>Login: {% if locked %}<span class="badge text-bg-danger">Locked out</span>{% else %}<span class="badge text-bg-success">OK</span>{% endif %}</p>
+        {% if perms.accounts.change_user %}
+        <div class="d-flex gap-2 flex-wrap">
+          <form method="post" action="{% url 'accounts:user_reset_2fa' object.pk %}">{% csrf_token %}
+            <button class="btn btn-outline-warning btn-sm" type="submit" {% if not has_2fa %}disabled{% endif %}><i class="bi bi-arrow-counterclockwise"></i> Reset 2FA</button>
+          </form>
+          <form method="post" action="{% url 'accounts:user_unlock' object.pk %}">{% csrf_token %}
+            <button class="btn btn-outline-primary btn-sm" type="submit" {% if not locked %}disabled{% endif %}><i class="bi bi-unlock"></i> Unlock</button>
+          </form>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-7">
+    <div class="card h-100">
+      <div class="card-header">Recent activity</div>
+      <div class="table-responsive">
+        <table class="table table-sm mb-0">
+          <tbody>
+          {% for log in recent_activity %}
+            <tr><td class="small">{% cell log "timestamp" %}</td><td>{{ log.get_action_display }}</td><td class="small">{{ log.model }} {{ log.object_repr }}</td></tr>
+          {% empty %}<tr><td class="text-muted text-center py-3">No activity yet.</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
