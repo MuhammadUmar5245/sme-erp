@@ -5,9 +5,8 @@ Report reference: §4.2 (testing at the end of each sprint), §5.1.2 (unit, inte
 **Environment:** `https://localhost` after `make up` and `make seed` (Al Wadi demo data). Demo password for all
 users: `AlWadi-Demo-2026!`. Admin and Accountant must enrol 2FA (Google/Microsoft Authenticator) at first login.
 
-**How to read the "Actual result" and "Status" columns.** Every case was walked through by the development team, and
-each one is also backed by an automated test or a recorded live check (named in the Actual column). Status
-**Pass (dev)** means it passed that verification. Formal UAT is the business users executing the steps themselves
+**How to read the "Actual result" and "Status" columns.** Each case is backed by an automated test or a recorded live check (named in the Actual column). Status
+**Pass (dev)** means it passed that verification; **To run** means it still needs a manual check. Formal UAT is the business users executing the steps themselves
 and replacing "Pass (dev)" with their own result, tester initials and date. The project sign-off
 (`docs/project_signoff.md`) requires that.
 
@@ -59,5 +58,5 @@ and replacing "Pass (dev)" with their own result, tester initials and date. The 
 | UAT-44 | Backup/DR | Admin | Backup exists | Change a record, then `make restore FILE=latest` and type RESTORE | Data back to backup state; app healthy; trial balance balanced | Live drill 2026-10-15 (docs/disaster_recovery.md §6): restore 3 s | Pass (dev) |
 | UAT-45 | Monitoring | Admin | Some usage | Open Administration → System monitoring | Availability, avg/p95 response, error rate, active users, DB size, last backup | `test_monitoring_page_admin_only`, `test_summary_figures` | Pass (dev) |
 | UAT-46 | Feasibility | Accountant | – | Reports → Feasibility; change discount rate to 12%; export PDF | NPV/IRR/ROI/payback/TCO recalculate; PDF downloads with chart | `test_calculator_page_api_and_saved_scenarios` | Pass (dev) |
-| UAT-47 | Usability | Any | – | Open the app on a phone (or browser at 375 px width) | Sidebar collapses into a menu button; tables scroll horizontally; forms stack | Manual check at 375 px and 768 px (Bootstrap breakpoints) | Pass (dev) |
+| UAT-47 | Usability | Any | – | Open the app on a phone (or browser at 375 px width) | Sidebar collapses into a menu button; tables scroll horizontally; forms stack | Built with Bootstrap responsive grid and an off-canvas sidebar below 992 px; not yet checked on a real phone/tablet | To run |
 | UAT-48 | Performance | – | Demo data | Run `loadtest/locustfile.py` with 50 users | No failed requests; median response < 200 ms | Live: 3,364 requests, 0 failures, median 73 ms (docs/testing/test_summary.md) | Pass (dev) |
