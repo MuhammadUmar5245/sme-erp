@@ -16,7 +16,8 @@ _request_ctx = contextvars.ContextVar("audit_request", default=None)
 _disabled = contextvars.ContextVar("audit_disabled", default=False)
 
 IGNORED_FIELDS = {"password", "last_login", "updated_at", "created_at"}
-EXCLUDED_MODELS = {"accounts.auditlog", "auth.permission", "monitoring.requestmetric"}
+EXCLUDED_MODELS = {"accounts.auditlog", "auth.permission", "monitoring.requestmetric", "monitoring.healthprobe",
+                   "core.sequence"}
 
 
 def set_request_context(request):

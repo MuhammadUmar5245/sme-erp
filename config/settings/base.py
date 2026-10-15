@@ -136,6 +136,7 @@ OTP_TOTP_ISSUER = "SME-ERP Al Wadi"
 
 # Apps whose model changes are written to the audit log.
 AUDIT_LOG_APPS = [
+    "core",
     "accounts",
     "hr",
     "inventory",

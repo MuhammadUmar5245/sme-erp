@@ -9,7 +9,7 @@ PostgreSQL 16 in Docker (the same engine as production), including the `reportin
 | Module | Unit / integration tests | Failed | What is covered |
 |---|---:|---:|---|
 | accounts | 41 | 0 | Roles/permissions, menu and API RBAC, 2FA enrolment and verification, lockout, password policy, session timeout, audit log, user management |
-| core | 48 | 0 | Health check, every module page for Admin, role access matrix, document forms, REST API flows, seed data consistency |
+| core | 51 | 0 | Health check, help & support / user evaluation, every module page for Admin, role access matrix, document forms, REST API flows, seed data consistency |
 | inventory | 11 | 0 | Stock from movements, transfers, adjustments (ledger), weighted average cost, low stock, insufficient stock |
 | purchasing | 8 | 0 | **Procure-to-pay integration** (PO → approve → partial/full receipt → bill → payments), atomicity, rules |
 | sales | 10 | 0 | **Order-to-cash integration** (SO → invoice with 5% VAT → stock OUT → journal → payments), credit notes, stock blocking, atomicity |
@@ -20,14 +20,14 @@ PostgreSQL 16 in Docker (the same engine as production), including the `reportin
 | integrations | 65 | 0 | Cleansing rules, import wizard with the dirty legacy files, dry run, commit, cleansing report, exports, POS idempotency |
 | monitoring | 9 | 0 | Request metrics, availability, p95, backup status/RPO, system-metrics API and reporting view |
 | feasibility | 9 | 0 | NPV, IRR, payback, ROI, TCO against reference values; calculator, PDF, API |
-| **Total** | **251** | **0** | Run time ≈ 2 minutes |
+| **Total** | **254** | **0** | Run time ≈ 2 minutes |
 
 ## 2. Code coverage
 
 | Scope | Coverage (statements + branches) | Target |
 |---|---:|---:|
 | Business logic (`services.py`, `cleansing.py`, `importers.py`, `builder.py`, `audit.py`) | **93.3 %** | ≥ 80 % (enforced by `make test`) |
-| Whole code base (excl. migrations and tests) | **91.3 %** | – |
+| Whole code base (excl. migrations and tests) | **91.4 %** | – |
 
 The HTML report is written to `htmlcov/index.html`.
 
@@ -66,4 +66,4 @@ workers or instances (report §5.2.3 scalability). Raw results: `loadtest/result
 | Backup and restore | Restore drill on 15 Oct 2026: restore 3 s, data verified (`docs/disaster_recovery.md` §6) |
 | TLS | HTTP→HTTPS redirect, TLS 1.2/1.3 on nginx; PostgreSQL SSL connection reported `TLSv1.3` |
 | Power BI | API paging (14,998 sales lines) with the Power BI token; `powerbi_reader` limited to schema `reporting` |
-| UAT | 48 cases in `docs/testing/uat_test_cases.md` (formal execution by business users at sign-off) |
+| UAT | 49 cases in `docs/testing/uat_test_cases.md` (formal execution by business users at sign-off) |

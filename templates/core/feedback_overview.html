@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header"><h1>User evaluation</h1>
+  <span class="small text-muted">Overall rating: <strong>{% if summary.overall.avg %}{{ summary.overall.avg|floatformat:2 }} / 5{% else %}–{% endif %}</strong> ({{ summary.overall.count }} ratings)</span></div>
+<div class="card mb-3"><div class="table-responsive"><table class="table table-sm mb-0">
+  <thead><tr><th>Area</th><th class="text-end">Avg rating</th><th class="text-end">Ratings</th><th class="text-end">Problems</th><th class="text-end">Open problems</th></tr></thead>
+  <tbody>{% for r in summary.rows %}<tr><td>{{ r.label }}</td><td class="text-end">{{ r.avg|floatformat:2|default:"–" }}</td><td class="text-end">{{ r.ratings }}</td><td class="text-end">{{ r.problems }}</td><td class="text-end {% if r.open %}text-danger fw-bold{% endif %}">{{ r.open }}</td></tr>
+  {% empty %}<tr><td colspan="5" class="text-muted text-center py-3">No feedback yet.</td></tr>{% endfor %}</tbody>
+</table></div></div>
+<div class="card"><div class="card-header">Latest feedback</div><div class="table-responsive"><table class="table table-sm mb-0">
+  <thead><tr><th>Date</th><th>User</th><th>Type</th><th>Area</th><th>Rating</th><th>Comment</th><th>Status</th></tr></thead>
+  <tbody>{% for f in items %}<tr><td class="small">{{ f.created_at|date:"d M Y H:i" }}</td><td>{{ f.user|default:"-" }}</td><td>{{ f.get_kind_display }}</td><td>{{ f.get_area_display }}</td><td>{{ f.rating|default:"-" }}</td><td class="small">{{ f.comment }}</td>
+    <td>{% if f.status == "OPEN" %}{% if perms.core.change_systemfeedback %}<form method="post" action="{% url 'core:feedback_resolve' f.pk %}">{% csrf_token %}<button class="btn btn-outline-success btn-sm">Resolve</button></form>{% else %}Open{% endif %}{% else %}<span class="badge text-bg-success">Resolved</span>{% endif %}</td></tr>
+  {% empty %}<tr><td colspan="7" class="text-muted text-center py-3">No feedback yet.</td></tr>{% endfor %}</tbody>
+</table></div></div>
+{% endblock %}

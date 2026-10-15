@@ -93,9 +93,15 @@ NAVIGATION = [
         "items": [
             ("Users", "accounts:user_list", "accounts.view_user"),
             ("Audit log", "accounts:audit_list", "accounts.view_auditlog"),
+            ("User evaluation", "core:feedback_overview", "core.view_systemfeedback"),
             ("System monitoring", "monitoring:dashboard", "monitoring.view_requestmetric"),
             ("API docs", "swagger-ui", None),
         ],
+    },
+    {
+        "label": "Help",
+        "icon": "question-circle",
+        "items": [("Help & support", "core:support", None)],
     },
 ]
 

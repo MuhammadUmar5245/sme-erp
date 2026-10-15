@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header"><h1>Help &amp; support</h1></div>
+<div class="row g-3">
+  <div class="col-12 col-lg-5">
+    <div class="card mb-3"><div class="card-header"><i class="bi bi-headset"></i> ERP help desk</div><div class="card-body small">
+      <p class="mb-1"><i class="bi bi-envelope"></i> <a href="mailto:{{ support.help_desk_email }}">{{ support.help_desk_email }}</a></p>
+      <p class="mb-1"><i class="bi bi-telephone"></i> {{ support.help_desk_phone }}</p>
+      <p class="mb-3"><i class="bi bi-whatsapp"></i> {{ support.whatsapp }}</p>
+      <table class="table table-sm mb-0"><thead><tr><th>Priority</th><th>Response target</th></tr></thead>
+        <tbody>{% for p, t in support.response_targets %}<tr><td>{{ p }}</td><td>{{ t }}</td></tr>{% endfor %}</tbody></table>
+    </div></div>
+    <div class="card"><div class="card-header"><i class="bi bi-book"></i> Guides and training</div><div class="card-body small">
+      <ul class="mb-0">
+        <li>User manual per role: <code>docs/user_manual.md</code></li>
+        <li>Training plan and session materials: <code>docs/training_plan.md</code></li>
+        <li>Reading the Power BI dashboards: <code>docs/powerbi/dashboard_spec.md</code></li>
+        <li>API reference: <a href="{% url 'swagger-ui' %}">/api/docs/</a></li>
+      </ul>
+    </div></div>
+  </div>
+  <div class="col-12 col-lg-7">
+    <form method="post" class="card" novalidate>{% csrf_token %}
+      <div class="card-header"><i class="bi bi-chat-heart"></i> Rate the system or report a problem</div>
+      <div class="card-body">{% include "core/partials/form_fields.html" %}</div>
+      <div class="card-footer bg-white"><button class="btn btn-primary btn-sm"><i class="bi bi-send"></i> Send</button></div>
+    </form>
+    {% if mine %}<div class="card mt-3"><div class="card-header">My recent feedback</div><ul class="list-group list-group-flush">
+      {% for f in mine %}<li class="list-group-item small">{{ f.created_at|date:"d M Y" }} · {{ f.get_kind_display }} · {{ f.get_area_display }}{% if f.rating %} · {{ f.rating }}/5{% endif %} · <span class="badge {% if f.status == 'OPEN' %}text-bg-warning{% else %}text-bg-success{% endif %}">{{ f.get_status_display }}</span></li>{% endfor %}
+    </ul></div>{% endif %}
+  </div>
+</div>
+{% endblock %}

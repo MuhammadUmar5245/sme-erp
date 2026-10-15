@@ -1,7 +1,8 @@
 # Windows equivalent of the Makefile:  .\make.ps1 up | down | migrate | seed | test | backup | restore [file]
 param([Parameter(Position = 0)][string]$Target = "help", [Parameter(Position = 1)][string]$File = "")
 
-$ErrorActionPreference = "Stop"
+# Native commands report failure through $LASTEXITCODE (checked in Run). Do not use
+# $ErrorActionPreference = "Stop": PowerShell 5.1 would treat Docker's progress output on stderr as an error.
 Set-Location $PSScriptRoot
 
 function Ensure-Env {
