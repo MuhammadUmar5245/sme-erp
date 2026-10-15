@@ -86,8 +86,12 @@ def lock_products(product_ids):
 def check_availability(warehouse, requirements):
     """requirements: {product: qty}. Raises InsufficientStock listing every shortage."""
     shortages = []
+    on_hand = dict(
+        StockMovement.objects.filter(warehouse=warehouse, product__in=[p.pk for p in requirements])
+        .values("product").annotate(total=Sum("quantity")).values_list("product", "total")
+    )
     for product, needed in requirements.items():
-        available = stock_on_hand(product, warehouse)
+        available = on_hand.get(product.pk, ZERO_QTY)
         if D(needed) > available:
             shortages.append((product, q3(needed), available))
     if shortages:

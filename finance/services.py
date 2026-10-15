@@ -47,6 +47,9 @@ def post_journal(entry_date, description, lines, source_type=JournalEntry.Source
 
     lines: iterable of (account_code_or_Account, debit, credit[, description]). Zero lines are skipped.
     """
+    lines = list(lines)
+    codes = {line[0] for line in lines if not isinstance(line[0], Account)}
+    accounts = Account.objects.in_bulk(codes, field_name="code") if codes else {}
     prepared = []
     total_debit = total_credit = ZERO
     for line in lines:
@@ -59,7 +62,9 @@ def post_journal(entry_date, description, lines, source_type=JournalEntry.Source
         if not debit and not credit:
             continue
         if not isinstance(acct, Account):
-            acct = account(acct)
+            if acct not in accounts:
+                raise Account.DoesNotExist(f"Account {acct} is not in the chart of accounts.")
+            acct = accounts[acct]
         prepared.append(JournalLine(account=acct, debit=debit, credit=credit, description=memo[:200]))
         total_debit += debit
         total_credit += credit

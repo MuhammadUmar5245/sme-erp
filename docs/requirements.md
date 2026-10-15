@@ -35,6 +35,7 @@ implements it, and the automated tests / UAT cases that verify it.
 | FR-26 | Import wizard for customers, suppliers, products, opening stock and opening balances from CSV/Excel: upload → column mapping → validation and cleansing preview → dry run → commit | 5.1.3 | integrations | `integrations/tests/test_import_wizard.py` |
 | FR-27 | Cleansing rules: trim/case normalisation, Oman phone format (+968), exact and fuzzy duplicate detection, missing required fields, negative quantities/amounts, date format normalisation; downloadable cleansing report (rows fixed, rejected and why) | 5.1.3 | integrations (`cleansing.py`) | `integrations/tests/test_cleansing.py`, `test_cleansing_report_and_mapping_rules` |
 | FR-28 | Export endpoints (CSV/Excel) for all master data | 3.5.2 | integrations | `test_exports_csv_and_excel`, `test_export_permissions` |
+| FR-30 | Realistic demo dataset (`make seed`): 18 months, 120 products, 40 suppliers, 300 customers in 6 cities, ~8,000 invoices with Ramadan/Eid, summer and Khareef seasonality, payment delays, feedback, employees and leave, stock-outs | 3.1, 5.1.4 | core (`seed_demo`) | `core/tests/test_seed_demo.py` |
 | FR-29 | POS integration: `POST /api/v1/integrations/pos/sales/` with API-key auth and mandatory Idempotency-Key creates paid POS invoices without double posting | 3.5.2 | integrations | `integrations/tests/test_pos_and_exports.py` |
 
 ## Non-functional requirements
