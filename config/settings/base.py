@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     "sales",
     "reports",
     "integrations",
+    "monitoring",
+    "feasibility",
 ]
 
 MIDDLEWARE = [
@@ -63,6 +65,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "monitoring.middleware.MetricsMiddleware",
     "django_otp.middleware.OTPMiddleware",
     "accounts.middleware.CurrentRequestMiddleware",
     "accounts.middleware.TwoFactorEnforcementMiddleware",
@@ -144,6 +147,11 @@ AUDIT_LOG_APPS = [
     "feasibility",
     "auth",
 ]
+# Performance monitoring and backups (report 5.2.2 / 5.2.3)
+MONITORING_ENABLED = env.bool("MONITORING_ENABLED", default=True)
+MONITORING_RETENTION_DAYS = env.int("MONITORING_RETENTION_DAYS", default=90)
+BACKUP_DIR = env("BACKUP_DIR", default="/backups")
+
 # Field-level encryption key for sensitive data at rest (Fernet, see .env.example).
 FIELD_ENCRYPTION_KEY = env("FIELD_ENCRYPTION_KEY", default="")
 

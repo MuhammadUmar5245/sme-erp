@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header">
+  <h1>System monitoring</h1>
+  <div class="btn-group btn-group-sm">{% for h, label in periods %}<a class="btn btn-outline-primary {% if h == hours %}active{% endif %}" href="?hours={{ h }}">{{ label }}</a>{% endfor %}</div>
+</div>
+<div class="row g-3 mb-3">
+  <div class="col-6 col-lg-3"><div class="card kpi-card success h-100"><div class="card-body"><div class="kpi-label">Availability</div><div class="kpi-value">{% if m.availability_pct is not None %}{{ m.availability_pct }}%{% else %}–{% endif %}</div><div class="small text-muted">Up since {{ m.uptime_since|date:"d M H:i" }} ({{ m.uptime_since|timesince }})</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card kpi-card h-100"><div class="card-body"><div class="kpi-label">Response time</div><div class="kpi-value">{{ m.avg_response_ms }} ms</div><div class="small text-muted">p95 {{ m.p95_response_ms|default:"–" }} ms</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card kpi-card {% if m.error_rate_pct > 1 %}danger{% else %}accent{% endif %} h-100"><div class="card-body"><div class="kpi-label">Error rate (5xx)</div><div class="kpi-value">{{ m.error_rate_pct }}%</div><div class="small text-muted">{{ m.error_count }} errors / {{ m.request_count }} requests</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card kpi-card h-100"><div class="card-body"><div class="kpi-label">Active users (15 min)</div><div class="kpi-value">{{ m.active_users_15m }}</div><div class="small text-muted">Database size {{ m.db_size_mb }} MB</div></div></div></div>
+</div>
+<div class="row g-3">
+  <div class="col-12 col-xl-8"><div class="card h-100"><div class="card-header">Requests and response time per hour</div><div class="card-body"><div class="chart-box"><canvas id="chartLoad"></canvas></div></div></div></div>
+  <div class="col-12 col-xl-4"><div class="card h-100"><div class="card-header">Last backup <span class="small text-muted">(RPO 24 h · RTO 4 h)</span></div><div class="card-body">
+    {% with b=m.last_backup %}
+    <p class="mb-2">{% if b.status == "success" %}<span class="badge text-bg-success">Success</span>{% elif b.status == "failed" %}<span class="badge text-bg-danger">Failed</span>{% else %}<span class="badge text-bg-secondary">{{ b.status|default:"unknown" }}</span>{% endif %}
+      {% if b.within_rpo is False %}<span class="badge text-bg-warning">Older than RPO</span>{% endif %}</p>
+    <dl class="row small mb-0">
+      <dt class="col-5 text-muted fw-normal">File</dt><dd class="col-7 text-break">{{ b.file|default:"–" }}</dd>
+      <dt class="col-5 text-muted fw-normal">Finished</dt><dd class="col-7">{{ b.finished_at|default:"–" }}</dd>
+      <dt class="col-5 text-muted fw-normal">Age</dt><dd class="col-7">{% if b.age_hours is not None %}{{ b.age_hours }} h{% else %}–{% endif %}</dd>
+      <dt class="col-5 text-muted fw-normal">Size</dt><dd class="col-7">{% if b.size_bytes %}{{ b.size_bytes|filesizeformat }}{% else %}–{% endif %}</dd>
+      <dt class="col-5 text-muted fw-normal">Off-site</dt><dd class="col-7">{{ b.offsite|default:"none" }}</dd>
+      <dt class="col-5 text-muted fw-normal">Message</dt><dd class="col-7">{{ b.message }}</dd>
+    </dl>
+    {% endwith %}
+  </div></div></div>
+  <div class="col-12"><div class="card"><div class="card-header">Busiest endpoints</div><div class="table-responsive"><table class="table table-sm mb-0">
+    <thead><tr><th>Method</th><th>Endpoint</th><th class="text-end">Requests</th><th class="text-end">Avg ms</th><th class="text-end">5xx errors</th></tr></thead>
+    <tbody>{% for e in m.endpoints %}<tr><td>{{ e.method }}</td><td class="font-monospace small">{{ e.endpoint }}</td><td class="text-end">{{ e.requests }}</td><td class="text-end">{{ e.avg_ms }}</td><td class="text-end {% if e.errors %}text-danger fw-bold{% endif %}">{{ e.errors }}</td></tr>
+    {% empty %}<tr><td colspan="5" class="text-center text-muted py-3">No traffic recorded in this period.</td></tr>{% endfor %}</tbody>
+  </table></div><div class="card-footer bg-white small text-muted">Same data for Power BI: <code>GET /api/v1/reports/system-metrics/?hours={{ hours }}</code></div></div></div>
+</div>
+{{ series|json_script:"series" }}
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+const s = JSON.parse(document.getElementById("series").textContent);
+new Chart(document.getElementById("chartLoad"), {data: {labels: s.labels, datasets: [
+  {type: "bar", label: "Requests", data: s.requests, backgroundColor: "#0f4c5c", yAxisID: "y"},
+  {type: "line", label: "Avg response (ms)", data: s.avg_ms, borderColor: "#e36414", backgroundColor: "#e36414", yAxisID: "y1", tension: .3},
+  {type: "line", label: "5xx errors", data: s.errors, borderColor: "#c0392b", backgroundColor: "#c0392b", yAxisID: "y"}]},
+  options: {responsive: true, maintainAspectRatio: false, scales: {y: {beginAtZero: true}, y1: {beginAtZero: true, position: "right", grid: {drawOnChartArea: false}}}}});
+</script>
+{% endblock %}

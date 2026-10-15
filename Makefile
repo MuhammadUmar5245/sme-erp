@@ -47,5 +47,8 @@ cert:
 backup:
 	$(COMPOSE) exec cron /scripts/backup.sh
 
+# make restore FILE=latest   (or FILE=sme_erp_20261014_020000.dump). Stops the app during the restore.
 restore:
-	$(COMPOSE) exec cron /scripts/restore.sh $(FILE)
+	$(COMPOSE) stop web
+	$(COMPOSE) exec -it cron /scripts/restore.sh $(or $(FILE),latest)
+	$(COMPOSE) start web

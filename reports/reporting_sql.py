@@ -171,6 +171,23 @@ VIEWS = {
 }
 
 
+# Views over tables owned by later apps: created only when the source table exists.
+OPTIONAL_VIEWS = {
+    "fact_system_metrics_hourly": ("monitoring_requestmetric", f"""
+        SELECT to_char(date_trunc('hour', timestamp AT TIME ZONE '{TZ}'), 'YYYYMMDDHH24')::bigint AS hour_key,
+               date_trunc('hour', timestamp AT TIME ZONE '{TZ}') AS hour_start,
+               to_char(timestamp AT TIME ZONE '{TZ}', 'YYYYMMDD')::int AS date_key,
+               COUNT(*) AS request_count,
+               round(AVG(duration_ms)::numeric, 1) AS avg_response_ms,
+               percentile_cont(0.95) WITHIN GROUP (ORDER BY duration_ms) AS p95_response_ms,
+               SUM(CASE WHEN status_code >= 500 THEN 1 ELSE 0 END) AS error_count,
+               COUNT(DISTINCT user_id) AS active_users,
+               SUM(CASE WHEN is_api THEN 1 ELSE 0 END) AS api_requests
+        FROM monitoring_requestmetric GROUP BY 1, 2, 3
+    """),
+}
+
+
 def rebuild_views(cursor):
     """Drop and recreate the reporting schema with every view (idempotent)."""
     cursor.execute(f"DROP SCHEMA IF EXISTS {SCHEMA} CASCADE")
@@ -178,6 +195,10 @@ def rebuild_views(cursor):
     cursor.execute(f"COMMENT ON SCHEMA {SCHEMA} IS 'Read-only star schema for Power BI (dim_*, fact_*)'")
     for name, sql in VIEWS.items():
         cursor.execute(f"CREATE VIEW {SCHEMA}.{name} AS {sql}")
+    for name, (table, sql) in OPTIONAL_VIEWS.items():
+        cursor.execute("SELECT to_regclass(%s)", [table])
+        if cursor.fetchone()[0]:
+            cursor.execute(f"CREATE VIEW {SCHEMA}.{name} AS {sql}")
     grant_reader(cursor)
 
 

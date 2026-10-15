@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load erp %}
+{% block content %}
+<div class="page-header">
+  <h1>ERP feasibility calculator</h1>
+  <a class="btn btn-outline-primary btn-sm" href="{% url 'feasibility:pdf' %}?{{ querystring }}"><i class="bi bi-file-earmark-pdf"></i> Export PDF</a>
+</div>
+<p class="text-muted small">Quantitative feasibility (report §2.2) for {{ company.name }}: ROI, NPV, IRR, payback and {{ r.inputs.years }}-year TCO. Defaults are the Al Wadi Trading assumptions in OMR.</p>
+<div class="row g-3">
+  <div class="col-12 col-xl-4">
+    <form method="get" class="card">
+      <div class="card-header">Assumptions</div>
+      <div class="card-body">
+        {% for field in form %}
+          <div class="mb-2"><label class="form-label small mb-0" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}
+            {% if field.help_text %}<div class="form-text mt-0">{{ field.help_text }}</div>{% endif %}
+            {% for e in field.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}</div>
+        {% endfor %}
+      </div>
+      <div class="card-footer bg-white d-flex gap-2"><button class="btn btn-primary btn-sm"><i class="bi bi-calculator"></i> Calculate</button>
+        <a class="btn btn-link btn-sm" href="{% url 'feasibility:calculator' %}">Reset to defaults</a></div>
+    </form>
+    {% if perms.feasibility.add_feasibilitystudy %}
+    <form method="post" action="{% url 'feasibility:save' %}" class="card mt-3">{% csrf_token %}
+      <div class="card-body">
+        {% for field in form %}<input type="hidden" name="{{ field.name }}" value="{{ field.value|default_if_none:'' }}">{% endfor %}
+        <label class="form-label small">Save this scenario as</label>
+        <div class="input-group input-group-sm"><input class="form-control" name="name" placeholder="e.g. Conservative case" required><button class="btn btn-outline-primary">Save</button></div>
+        {% if studies %}<ul class="small mt-2 mb-0">{% for s in studies %}<li><a href="{% url 'feasibility:study' s.pk %}">{{ s.name }}</a> <span class="text-muted">{{ s.created_at|date:"d M" }}</span></li>{% endfor %}</ul>{% endif %}
+      </div>
+    </form>
+    {% endif %}
+  </div>
+  <div class="col-12 col-xl-8">
+    <div class="row g-3 mb-3">
+      <div class="col-6 col-md-4"><div class="card kpi-card {% if r.npv > 0 %}success{% else %}danger{% endif %} h-100"><div class="card-body"><div class="kpi-label">NPV @ {{ r.inputs.discount_rate_pct }}%</div><div class="kpi-value">{{ r.npv|money:0 }}</div><div class="small">{{ r.decision }}</div></div></div></div>
+      <div class="col-6 col-md-4"><div class="card kpi-card {% if r.meets_irr_hurdle %}success{% else %}accent{% endif %} h-100"><div class="card-body"><div class="kpi-label">IRR</div><div class="kpi-value">{% if r.irr_pct is not None %}{{ r.irr_pct }}%{% else %}n/a{% endif %}</div><div class="small text-muted">Hurdle 20% (report §2.2.4)</div></div></div></div>
+      <div class="col-6 col-md-4"><div class="card kpi-card h-100"><div class="card-body"><div class="kpi-label">ROI ({{ r.inputs.years }} years)</div><div class="kpi-value">{{ r.roi_pct }}%</div></div></div></div>
+      <div class="col-6 col-md-4"><div class="card kpi-card accent h-100"><div class="card-body"><div class="kpi-label">Payback</div><div class="kpi-value">{% if r.payback_years %}{{ r.payback_years }} yrs{% else %}&gt; {{ r.inputs.years }} yrs{% endif %}</div><div class="small text-muted">Discounted: {{ r.discounted_payback_years|default:"n/a" }} yrs</div></div></div></div>
+      <div class="col-6 col-md-4"><div class="card kpi-card h-100"><div class="card-body"><div class="kpi-label">{{ r.inputs.years }}-year TCO</div><div class="kpi-value">{{ r.tco|money:0 }}</div></div></div></div>
+      <div class="col-6 col-md-4"><div class="card kpi-card success h-100"><div class="card-body"><div class="kpi-label">Total benefits</div><div class="kpi-value">{{ r.total_benefits|money:0 }}</div><div class="small text-muted">Net {{ r.net_benefit|money:0 }}</div></div></div></div>
+    </div>
+    <div class="card mb-3"><div class="card-header">Cash flow</div><div class="card-body"><div class="chart-box"><canvas id="chartFlow"></canvas></div></div></div>
+    <div class="card"><div class="table-responsive"><table class="table table-sm mb-0">
+      <thead><tr><th>Year</th><th class="text-end">Costs</th><th class="text-end">Benefits</th><th class="text-end">Net</th><th class="text-end">Cumulative</th><th class="text-end">Discounted</th></tr></thead>
+      <tbody>{% for row in r.cashflows %}<tr><td>{{ row.year }}</td><td class="text-end font-monospace">{{ row.costs|money }}</td><td class="text-end font-monospace">{{ row.benefits|money }}</td>
+        <td class="text-end font-monospace {% if row.net < 0 %}text-danger{% endif %}">{{ row.net|money }}</td><td class="text-end font-monospace {% if row.cumulative < 0 %}text-danger{% endif %}">{{ row.cumulative|money }}</td><td class="text-end font-monospace">{{ row.discounted|money }}</td></tr>{% endfor %}</tbody>
+    </table></div></div>
+  </div>
+</div>
+{{ chart|json_script:"flow" }}
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+const f = JSON.parse(document.getElementById("flow").textContent);
+new Chart(document.getElementById("chartFlow"), {data: {labels: f.labels, datasets: [
+  {type: "bar", label: "Benefits", data: f.benefits, backgroundColor: "#2a9d8f"},
+  {type: "bar", label: "Costs", data: f.costs.map(v => -v), backgroundColor: "#c0392b"},
+  {type: "line", label: "Cumulative net cash flow", data: f.cumulative, borderColor: "#e36414", backgroundColor: "#e36414", tension: .2}]},
+  options: {responsive: true, maintainAspectRatio: false, scales: {y: {ticks: {callback: v => "OMR " + v.toLocaleString()}}}}});
+</script>
+{% endblock %}

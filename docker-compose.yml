@@ -1,4 +1,5 @@
-# SME-ERP stack: certs (one-shot) -> db (PostgreSQL 16 + SSL) -> web (Django/gunicorn) -> nginx (TLS).
+# SME-ERP stack: certs (one-shot) -> db (PostgreSQL 16 + SSL) -> web (Django/gunicorn) -> nginx (TLS)
+# + cron (daily database backups).
 name: sme-erp
 
 services:
@@ -54,7 +55,7 @@ services:
       TZ: Asia/Muscat
     volumes:
       - .:/app
-      - backups:/backups:ro
+      - ./backups:/backups:ro
     depends_on:
       db:
         condition: service_healthy
@@ -81,6 +82,22 @@ services:
         condition: service_started
     restart: unless-stopped
 
+  cron:
+    # Daily pg_dump backup (02:00 Asia/Muscat), 14-day retention, optional S3 / Azure Blob copy.
+    build:
+      context: .
+      dockerfile: docker/backup/Dockerfile
+    image: sme-erp-backup
+    env_file: .env
+    environment:
+      TZ: Asia/Muscat
+    volumes:
+      - ./backups:/backups
+      - ./scripts:/scripts:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
 volumes:
   pgdata:
-  backups:

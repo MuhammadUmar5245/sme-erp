@@ -29,6 +29,11 @@ switch ($Target) {
     "createsuperuser"{ Ensure-Env; Run @("docker", "compose", "run", "--rm", "web", "python", "manage.py", "createsuperuser") }
     "cert"           { Run @("docker", "compose", "run", "--rm", "-e", "FORCE=1", "certs") }
     "backup"         { Run @("docker", "compose", "exec", "cron", "/scripts/backup.sh") }
-    "restore"        { Run @("docker", "compose", "exec", "cron", "/scripts/restore.sh", $File) }
+    "restore"        {
+        if (-not $File) { $File = "latest" }
+        Run @("docker", "compose", "stop", "web")
+        & docker compose exec -it cron /scripts/restore.sh $File
+        Run @("docker", "compose", "start", "web")
+    }
     default          { Write-Host "Usage: .\make.ps1 up | down | migrate | seed | test | backup | restore <file> | logs | shell | cert" }
 }

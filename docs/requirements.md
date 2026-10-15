@@ -36,6 +36,8 @@ implements it, and the automated tests / UAT cases that verify it.
 | FR-27 | Cleansing rules: trim/case normalisation, Oman phone format (+968), exact and fuzzy duplicate detection, missing required fields, negative quantities/amounts, date format normalisation; downloadable cleansing report (rows fixed, rejected and why) | 5.1.3 | integrations (`cleansing.py`) | `integrations/tests/test_cleansing.py`, `test_cleansing_report_and_mapping_rules` |
 | FR-28 | Export endpoints (CSV/Excel) for all master data | 3.5.2 | integrations | `test_exports_csv_and_excel`, `test_export_permissions` |
 | FR-30 | Realistic demo dataset (`make seed`): 18 months, 120 products, 40 suppliers, 300 customers in 6 cities, ~8,000 invoices with Ramadan/Eid, summer and Khareef seasonality, payment delays, feedback, employees and leave, stock-outs | 3.1, 5.1.4 | core (`seed_demo`) | `core/tests/test_seed_demo.py` |
+| FR-31 | Monitoring page (Admin): uptime/availability, average and p95 response time, error rate, active users, DB size, last backup; same data at `/api/v1/reports/system-metrics/` and `reporting.fact_system_metrics_hourly` | 5.2.3 | monitoring | `monitoring/tests/test_monitoring.py` |
+| FR-32 | Feasibility calculator: ROI, NPV, IRR, payback, discounted payback, 5-year TCO with Al Wadi defaults, cash-flow chart, PDF export, saved scenarios | 2.2.1–2.2.5 | feasibility | `feasibility/tests/test_formulas.py` |
 | FR-29 | POS integration: `POST /api/v1/integrations/pos/sales/` with API-key auth and mandatory Idempotency-Key creates paid POS invoices without double posting | 3.5.2 | integrations | `integrations/tests/test_pos_and_exports.py` |
 
 ## Non-functional requirements
@@ -52,3 +54,6 @@ implements it, and the automated tests / UAT cases that verify it.
 | NFR-08 | Cross-module postings are atomic (all-or-nothing) | 2.3.4 | `transaction.atomic()` in services | `test_invoice_posting_is_atomic`, `test_receipt_is_atomic` |
 | NFR-09 | Money stored as exact decimals with 3 places (OMR baisa) | 4.4.2 | `DecimalField(14, 3)` | all finance tests |
 | NFR-10 | Indexed relational schema with foreign keys | 4.4.2 | PostgreSQL 16, model indexes | migrations |
+| NFR-11 | Daily compressed, checksummed (optionally encrypted) backups, 14-day retention, optional S3/Azure off-site copy | 5.2.2 | `scripts/backup.sh`, cron service | restore test in `docs/disaster_recovery.md` |
+| NFR-12 | RPO 24 h, RTO 4 h with a tested restore procedure | 5.2.2 | `scripts/restore.sh`, `make restore` | `docs/disaster_recovery.md` §6, `test_last_backup_status` |
+| NFR-13 | Performance monitoring of every request (count, response time, errors per endpoint) | 5.2.3, 2.3.2 | `monitoring.middleware` | `test_middleware_records_requests_per_endpoint` |
