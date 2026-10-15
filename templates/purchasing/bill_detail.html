@@ -1,0 +1,17 @@
+{% extends "core/generic_detail.html" %}
+{% load erp %}
+{% block detail_actions %}
+{% if object.balance_due > 0 and object.status != "CANCELLED" and perms.purchasing.add_supplierpayment %}
+  <a class="btn btn-primary btn-sm" href="{% url 'purchasing:bill_pay' object.pk %}"><i class="bi bi-cash-coin"></i> Record payment</a>
+{% endif %}
+{% endblock %}
+{% block detail_extra %}
+<div class="card">
+  <div class="card-header">Payments</div>
+  <div class="table-responsive"><table class="table table-sm mb-0">
+    <thead><tr><th>Number</th><th>Date</th><th>Method</th><th>Reference</th><th class="text-end">Amount</th></tr></thead>
+    <tbody>{% for p in object.payments.all %}<tr><td>{{ p.number }}</td><td>{{ p.payment_date|date:"d M Y" }}</td><td>{{ p.get_method_display }}</td><td>{{ p.reference }}</td><td class="text-end font-monospace">{{ p.amount|money }}</td></tr>
+    {% empty %}<tr><td colspan="5" class="text-muted text-center py-3">No payments yet.</td></tr>{% endfor %}</tbody>
+  </table></div>
+</div>
+{% endblock %}

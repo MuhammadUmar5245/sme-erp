@@ -1,0 +1,41 @@
+{% extends "core/generic_detail.html" %}
+{% load erp %}
+{% block detail_actions %}
+{% if object.status == "DRAFT" and perms.purchasing.approve_purchaseorder %}
+  <form method="post" action="{% url 'purchasing:po_approve' object.pk %}">{% csrf_token %}<button class="btn btn-success btn-sm"><i class="bi bi-check2-circle"></i> Approve</button></form>
+{% endif %}
+{% if object.status == "APPROVED" and perms.purchasing.add_goodsreceipt %}
+  <a class="btn btn-primary btn-sm" href="{% url 'purchasing:po_receive' object.pk %}"><i class="bi bi-box-arrow-in-down"></i> Receive goods</a>
+{% endif %}
+{% if object.status == "RECEIVED" and perms.purchasing.add_supplierbill %}
+  <a class="btn btn-primary btn-sm" href="{% url 'purchasing:po_bill' object.pk %}"><i class="bi bi-receipt"></i> Record supplier bill</a>
+{% endif %}
+{% if object.status == "DRAFT" or object.status == "APPROVED" %}{% if perms.purchasing.change_purchaseorder and not object.receipts.exists %}
+  <form method="post" action="{% url 'purchasing:po_cancel' object.pk %}" onsubmit="return confirm('Cancel this purchase order?')">{% csrf_token %}<button class="btn btn-outline-danger btn-sm">Cancel PO</button></form>
+{% endif %}{% endif %}
+{% endblock %}
+{% block detail_extra %}
+<div class="card mb-3">
+  <div class="card-header">Lines</div>
+  <div class="table-responsive"><table class="table table-sm mb-0">
+    <thead><tr><th>Product</th><th class="text-end">Ordered</th><th class="text-end">Received</th><th class="text-end">Unit cost</th><th class="text-end">VAT %</th><th class="text-end">Net</th><th class="text-end">Total</th></tr></thead>
+    <tbody>{% for l in object.lines.all %}
+      <tr><td>{{ l.product }}</td><td class="text-end">{{ l.quantity|floatformat:0 }}</td>
+        <td class="text-end {% if l.received_quantity >= l.quantity %}text-success{% endif %}">{{ l.received_quantity|floatformat:0 }}</td>
+        <td class="text-end font-monospace">{{ l.unit_cost|money }}</td><td class="text-end">{{ l.vat_rate|floatformat:0 }}</td>
+        <td class="text-end font-monospace">{{ l.line_subtotal|money }}</td><td class="text-end font-monospace">{{ l.line_total|money }}</td></tr>
+    {% endfor %}</tbody>
+    <tfoot class="table-light">
+      <tr><td colspan="6" class="text-end">Subtotal</td><td class="text-end font-monospace">{{ object.subtotal|money }}</td></tr>
+      <tr><td colspan="6" class="text-end">VAT 5%</td><td class="text-end font-monospace">{{ object.vat_amount|money }}</td></tr>
+      <tr class="fw-bold"><td colspan="6" class="text-end">Total (OMR)</td><td class="text-end font-monospace">{{ object.total|money }}</td></tr>
+    </tfoot>
+  </table></div>
+</div>
+<div class="row g-3">
+  <div class="col-md-6"><div class="card h-100"><div class="card-header">Goods receipts</div>
+    <ul class="list-group list-group-flush">{% for r in object.receipts.all %}<li class="list-group-item small"><a href="{% url 'purchasing:grn_detail' r.pk %}">{{ r.number }}</a> · {{ r.receipt_date|date:"d M Y" }}</li>{% empty %}<li class="list-group-item small text-muted">None yet.</li>{% endfor %}</ul></div></div>
+  <div class="col-md-6"><div class="card h-100"><div class="card-header">Supplier bills</div>
+    <ul class="list-group list-group-flush">{% for b in object.bills.all %}<li class="list-group-item small"><a href="{% url 'purchasing:bill_detail' b.pk %}">{{ b.number }}</a> · {{ b.total|money }} · {% status_badge b.status b.get_status_display %}</li>{% empty %}<li class="list-group-item small text-muted">None yet.</li>{% endfor %}</ul></div></div>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load erp %}
+{% block content %}
+<div class="page-header">
+  <h1>{{ title }}</h1>
+  <a class="btn btn-link btn-sm" href="{% url 'purchasing:po_detail' order.pk %}"><i class="bi bi-arrow-left"></i> Back to order</a>
+</div>
+<p class="text-muted small">Supplier: <strong>{{ order.supplier.name }}</strong> · Receiving into <strong>{{ order.warehouse }}</strong>. Quantities default to what is still outstanding; change them for a partial delivery.</p>
+<form method="post">{% csrf_token %}
+  <div class="card mb-3"><div class="table-responsive"><table class="table table-sm mb-0">
+    <thead><tr><th>Product</th><th class="text-end">Ordered</th><th class="text-end">Already received</th><th style="width:160px">Receive now</th></tr></thead>
+    <tbody>{% for l in lines %}
+      <tr><td>{{ l.product }}</td><td class="text-end">{{ l.quantity|floatformat:0 }}</td><td class="text-end">{{ l.received_quantity|floatformat:0 }}</td>
+        <td><input class="form-control form-control-sm text-end" type="number" step="0.001" min="0" max="{{ l.remaining_quantity }}" name="qty_{{ l.pk }}" value="{{ l.remaining_quantity|floatformat:'-3' }}"></td></tr>
+    {% endfor %}</tbody>
+  </table></div></div>
+  <div class="mb-3" style="max-width:480px"><label class="form-label">Notes (delivery note no., condition)</label><input class="form-control" name="notes" maxlength="200"></div>
+  <button class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i> Post goods receipt</button>
+</form>
+{% endblock %}

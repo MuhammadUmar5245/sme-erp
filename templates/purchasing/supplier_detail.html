@@ -1,0 +1,14 @@
+{% extends "core/generic_detail.html" %}
+{% load erp %}
+{% block detail_extra %}
+<div class="row g-3">
+  <div class="col-lg-6"><div class="card h-100"><div class="card-header">Recent purchase orders</div>
+    <div class="table-responsive"><table class="table table-sm mb-0"><tbody>
+    {% for po in object.purchase_orders.all|slice:":10" %}<tr><td><a href="{% url 'purchasing:po_detail' po.pk %}">{{ po.number }}</a></td><td>{{ po.order_date|date:"d M Y" }}</td><td class="text-end font-monospace">{{ po.total|money }}</td><td>{% status_badge po.status po.get_status_display %}</td></tr>
+    {% empty %}<tr><td class="text-muted text-center py-3">No orders.</td></tr>{% endfor %}</tbody></table></div></div></div>
+  <div class="col-lg-6"><div class="card h-100"><div class="card-header">Recent bills</div>
+    <div class="table-responsive"><table class="table table-sm mb-0"><tbody>
+    {% for b in object.bills.all|slice:":10" %}<tr><td><a href="{% url 'purchasing:bill_detail' b.pk %}">{{ b.number }}</a></td><td>{{ b.due_date|date:"d M Y" }}</td><td class="text-end font-monospace">{{ b.balance_due|money }}</td><td>{% status_badge b.status b.get_status_display %}</td></tr>
+    {% empty %}<tr><td class="text-muted text-center py-3">No bills.</td></tr>{% endfor %}</tbody></table></div></div></div>
+</div>
+{% endblock %}
