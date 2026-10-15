@@ -1,0 +1,10 @@
+Account,Account Name,Dr,Cr,As Of
+1000 - Cash,Cash on hand,"1,250.500",,31/12/2025
+1010,Bank Muscat,"48,300.000",,31/12/2025
+1100,Debtors control,"12,400.750",,31/12/2025
+2000,Creditors control,,"9,875.250",31/12/2025
+2100,VAT payable,,"1,120.000",31/12/2025
+1500,Vehicles,"18,000",500,31/12/2025
+1999,Suspense,300,,31/12/2025
+3000,Capital,,"60,000.000",31/12/2025
+1010,Bank Muscat (again),100,,31/12/2025

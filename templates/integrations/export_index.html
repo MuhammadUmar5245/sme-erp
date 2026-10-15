@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header"><h1>Master data exports</h1></div>
+<div class="card" style="max-width:720px">
+  <ul class="list-group list-group-flush">
+  {% for entity, label, allowed in exports %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <span>{{ label }}</span>
+      {% if allowed %}
+      <span class="btn-group btn-group-sm">
+        <a class="btn btn-outline-primary" href="{% url 'integrations:export_download' entity 'csv' %}"><i class="bi bi-filetype-csv"></i> CSV</a>
+        <a class="btn btn-outline-primary" href="{% url 'integrations:export_download' entity 'xlsx' %}"><i class="bi bi-file-earmark-excel"></i> Excel</a>
+      </span>
+      {% else %}<span class="small text-muted">No access</span>{% endif %}
+    </li>
+  {% endfor %}
+  </ul>
+  <div class="card-footer bg-white small text-muted">Same data via the API: <code>GET /api/v1/integrations/export/&lt;entity&gt;/?format=csv|xlsx</code></div>
+</div>
+{% endblock %}

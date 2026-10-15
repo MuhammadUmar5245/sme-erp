@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load erp %}
+{% block content %}
+<div class="page-header">
+  <h1>{{ title }}</h1>
+  <div class="d-flex gap-2 align-items-center">{% status_badge job.status job.get_status_display %}
+    <a class="btn btn-link btn-sm" href="{% url 'integrations:import_list' %}"><i class="bi bi-arrow-left"></i> All imports</a></div>
+</div>
+
+<ol class="list-inline small text-muted mb-3">
+  <li class="list-inline-item"><span class="badge text-bg-success">1</span> Upload</li>
+  <li class="list-inline-item"><span class="badge {% if job.status != 'UPLOADED' %}text-bg-success{% else %}text-bg-primary{% endif %}">2</span> Map columns</li>
+  <li class="list-inline-item"><span class="badge {% if job.status == 'VALIDATED' or job.status == 'COMMITTED' %}text-bg-success{% else %}text-bg-secondary{% endif %}">3</span> Validate &amp; cleanse</li>
+  <li class="list-inline-item"><span class="badge {% if job.dry_run %}text-bg-success{% else %}text-bg-secondary{% endif %}">4</span> Dry run</li>
+  <li class="list-inline-item"><span class="badge {% if job.status == 'COMMITTED' %}text-bg-success{% else %}text-bg-secondary{% endif %}">5</span> Commit</li>
+</ol>
+
+{% if job.status != "COMMITTED" %}
+<div class="card mb-3">
+  <div class="card-header">Step 2 - Column mapping <span class="text-muted small">({{ job.raw_rows|length }} rows read from {{ job.original_filename }})</span></div>
+  <form method="post" action="{% url 'integrations:import_map' job.pk %}">{% csrf_token %}
+    <div class="table-responsive"><table class="table table-sm mb-0">
+      <thead><tr><th>ERP field</th><th>Column in your file</th><th class="d-none d-md-table-cell">Sample values</th></tr></thead>
+      <tbody>{% for row in mapping_rows %}
+        <tr><td>{{ row.field.label }}{% if row.field.required %} <span class="text-danger">*</span>{% endif %}</td>
+          <td><select class="form-select form-select-sm" name="map_{{ row.field.name }}"><option value="">- not mapped -</option>
+            {% for h in job.headers %}<option value="{{ h }}" {% if h == row.selected %}selected{% endif %}>{{ h }}</option>{% endfor %}</select></td>
+          <td class="d-none d-md-table-cell small text-muted">{% if row.selected %}{% for s in sample %}{{ s|get_item:row.selected|default_if_none:"" }}{% if not forloop.last %} · {% endif %}{% endfor %}{% endif %}</td></tr>
+      {% endfor %}</tbody>
+    </table></div>
+    <div class="card-footer bg-white"><button class="btn btn-primary btn-sm"><i class="bi bi-check2-square"></i> Save mapping &amp; validate</button></div>
+  </form>
+</div>
+{% endif %}
+
+{% if job.summary %}
+<div class="row g-3 mb-3">
+  <div class="col-6 col-md-2"><div class="card kpi-card h-100"><div class="card-body"><div class="kpi-label">Rows</div><div class="kpi-value">{{ job.summary.total }}</div></div></div></div>
+  <div class="col-6 col-md-2"><div class="card kpi-card success h-100"><div class="card-body"><div class="kpi-label">Clean</div><div class="kpi-value">{{ job.summary.ok }}</div></div></div></div>
+  <div class="col-6 col-md-2"><div class="card kpi-card accent h-100"><div class="card-body"><div class="kpi-label">Fixed</div><div class="kpi-value">{{ job.summary.fixed }}</div><div class="small text-muted">{{ job.summary.fixes_applied }} fixes</div></div></div></div>
+  <div class="col-6 col-md-2"><div class="card kpi-card danger h-100"><div class="card-body"><div class="kpi-label">Rejected</div><div class="kpi-value">{{ job.summary.rejected }}</div><div class="small text-muted">{{ job.summary.duplicates }} duplicates</div></div></div></div>
+  <div class="col-12 col-md-4"><div class="card h-100"><div class="card-body d-flex flex-wrap gap-2 align-items-center">
+    <a class="btn btn-outline-secondary btn-sm" href="{% url 'integrations:import_report' job.pk %}"><i class="bi bi-download"></i> Cleansing report (CSV)</a>
+    {% if job.status == "VALIDATED" %}
+      <form method="post" action="{% url 'integrations:import_dry_run' job.pk %}">{% csrf_token %}<button class="btn btn-outline-primary btn-sm"><i class="bi bi-eye"></i> Dry run</button></form>
+      <form method="post" action="{% url 'integrations:import_commit' job.pk %}" onsubmit="return confirm('Import {{ job.summary.importable }} valid rows? Rejected rows are skipped.')">{% csrf_token %}<button class="btn btn-success btn-sm" {% if not job.summary.importable %}disabled{% endif %}><i class="bi bi-database-check"></i> Commit {{ job.summary.importable }} rows</button></form>
+    {% endif %}
+  </div></div></div>
+</div>
+{% if job.dry_run %}<div class="alert alert-info small">Dry run ({{ job.dry_run.at|slice:":16" }}): {% for k, v in job.dry_run.items %}{% if k != "at" %}<strong>{{ k }}</strong>: {{ v }} {% endif %}{% endfor %} - nothing was saved.</div>{% endif %}
+{% if job.summary.committed %}<div class="alert alert-success small">Committed {{ job.committed_at|date:"d M Y H:i" }}: {% for k, v in job.summary.committed.items %}<strong>{{ k }}</strong>: {{ v }} {% endfor %}</div>{% endif %}
+
+<div class="card">
+  <div class="card-header d-flex flex-wrap justify-content-between gap-2"><span>Step 3 - Validation &amp; cleansing preview ({{ result_count }} rows{% if result_count > 300 %}, first 300 shown{% endif %})</span>
+    <span class="btn-group btn-group-sm">
+      <a class="btn btn-outline-secondary {% if not show %}active{% endif %}" href="?">All</a>
+      <a class="btn btn-outline-success {% if show == 'ok' %}active{% endif %}" href="?show=ok">Clean</a>
+      <a class="btn btn-outline-warning {% if show == 'fixed' %}active{% endif %}" href="?show=fixed">Fixed</a>
+      <a class="btn btn-outline-danger {% if show == 'rejected' %}active{% endif %}" href="?show=rejected">Rejected</a>
+    </span></div>
+  <div class="table-responsive"><table class="table table-sm mb-0 small">
+    <thead><tr><th>Row</th><th>Status</th>{% for f in fields %}<th>{{ f.label }}</th>{% endfor %}<th>Fixes / reasons</th></tr></thead>
+    <tbody>{% for r in results %}
+      <tr class="{% if r.status == 'rejected' %}table-danger{% elif r.status == 'fixed' %}table-warning{% endif %}">
+        <td>{{ r.row }}</td><td>{{ r.status|upper }}</td>
+        {% for f in fields %}<td>{{ r.data|get_item:f.name|default_if_none:"" }}</td>{% endfor %}
+        <td>{% for e in r.errors %}<div class="text-danger"><i class="bi bi-x-circle"></i> {{ e }}</div>{% endfor %}{% for x in r.fixes %}<div class="text-body-secondary"><i class="bi bi-magic"></i> {{ x }}</div>{% endfor %}{% for w in r.warnings %}<div class="text-warning-emphasis"><i class="bi bi-exclamation-triangle"></i> {{ w }}</div>{% endfor %}</td>
+      </tr>
+    {% empty %}<tr><td colspan="20" class="text-center text-muted py-3">No rows.</td></tr>{% endfor %}</tbody>
+  </table></div>
+</div>
+{% endif %}
+{% endblock %}

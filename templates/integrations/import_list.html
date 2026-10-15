@@ -1,0 +1,15 @@
+{% extends "core/generic_list.html" %}
+{% block before_table %}
+<div class="card mb-3">
+  <div class="card-header"><i class="bi bi-upload"></i> Step 1 - Upload a legacy file</div>
+  <div class="card-body">
+    <form method="post" action="{% url 'integrations:import_upload' %}" enctype="multipart/form-data" class="row g-2 align-items-end">{% csrf_token %}
+      <div class="col-12 col-md-4"><label class="form-label">{{ upload_form.entity.label }}</label>{{ upload_form.entity }}</div>
+      <div class="col-12 col-md-5"><label class="form-label">File</label>{{ upload_form.file }}<div class="form-text">{{ upload_form.file.help_text }}</div></div>
+      <div class="col-12 col-md-3"><button class="btn btn-primary w-100"><i class="bi bi-cloud-arrow-up"></i> Upload</button></div>
+    </form>
+    <p class="small text-muted mt-3 mb-0"><i class="bi bi-info-circle"></i> Steps: upload → column mapping → validation &amp; cleansing preview → dry run → commit.
+      Recommended order: suppliers, customers, products, opening stock, opening balances. Sample dirty files are in <code>sample_data/legacy/</code>.</p>
+  </div>
+</div>
+{% endblock %}

@@ -32,6 +32,10 @@ implements it, and the automated tests / UAT cases that verify it.
 | FR-23 | RESTful reporting API for Power BI's Web connector (`/api/v1/reports/…`): token auth, date-range filters, pagination | 4.4.1, 4.5.2 | reports | `test_reporting_api_requires_permission_and_supports_token`, `test_every_reporting_endpoint_responds` |
 | FR-24 | In-app dashboard: KPIs (revenue MTD/YTD, gross margin %, receivables, low-stock count, average CSAT) and charts (monthly sales, top 10 products, sales by city, cash in vs out) | 3.5.1, 4.5.1 | reports | `test_kpis`, `test_dashboard_charts`, `test_dashboard_and_builder_pages` |
 | FR-25 | Custom report builder: dataset, date range, group-by, filters, preview; export to CSV, Excel and PDF | 3.5.1 | reports | `test_report_builder_groups_and_filters`, `test_exports` |
+| FR-26 | Import wizard for customers, suppliers, products, opening stock and opening balances from CSV/Excel: upload → column mapping → validation and cleansing preview → dry run → commit | 5.1.3 | integrations | `integrations/tests/test_import_wizard.py` |
+| FR-27 | Cleansing rules: trim/case normalisation, Oman phone format (+968), exact and fuzzy duplicate detection, missing required fields, negative quantities/amounts, date format normalisation; downloadable cleansing report (rows fixed, rejected and why) | 5.1.3 | integrations (`cleansing.py`) | `integrations/tests/test_cleansing.py`, `test_cleansing_report_and_mapping_rules` |
+| FR-28 | Export endpoints (CSV/Excel) for all master data | 3.5.2 | integrations | `test_exports_csv_and_excel`, `test_export_permissions` |
+| FR-29 | POS integration: `POST /api/v1/integrations/pos/sales/` with API-key auth and mandatory Idempotency-Key creates paid POS invoices without double posting | 3.5.2 | integrations | `integrations/tests/test_pos_and_exports.py` |
 
 ## Non-functional requirements
 

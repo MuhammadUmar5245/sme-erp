@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "purchasing",
     "sales",
     "reports",
+    "integrations",
 ]
 
 MIDDLEWARE = [
@@ -188,6 +189,8 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 50,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "COERCE_DECIMAL_TO_STRING": True,
+    # Free ?format= for CSV/Excel export endpoints (not used for renderer selection).
+    "URL_FORMAT_OVERRIDE": None,
 }
 
 SPECTACULAR_SETTINGS = {

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header"><h1>POS API keys</h1></div>
+{% if new_key %}
+<div class="alert alert-warning"><strong>New API key</strong> (shown only once):<br><code class="user-select-all fs-6">{{ new_key }}</code></div>
+{% endif %}
+<div class="row g-3">
+  <div class="col-12 col-xl-8">
+    <div class="card"><div class="table-responsive"><table class="table table-sm mb-0">
+      <thead><tr><th>Name</th><th>Prefix</th><th>Warehouse</th><th>Walk-in customer</th><th>Last used</th><th>Status</th><th></th></tr></thead>
+      <tbody>{% for k in keys %}
+        <tr><td>{{ k.name }}</td><td><code>{{ k.prefix }}…</code></td><td>{{ k.warehouse.code }}</td><td>{{ k.default_customer.name }}</td>
+          <td class="small">{{ k.last_used_at|date:"d M Y H:i"|default:"never" }}</td>
+          <td>{% if k.is_active %}<span class="badge text-bg-success">Active</span>{% else %}<span class="badge text-bg-secondary">Revoked</span>{% endif %}</td>
+          <td>{% if k.is_active and perms.integrations.change_apikey %}<form method="post" action="{% url 'integrations:apikey_revoke' k.pk %}" onsubmit="return confirm('Revoke this key?')">{% csrf_token %}<button class="btn btn-outline-danger btn-sm">Revoke</button></form>{% endif %}</td></tr>
+      {% empty %}<tr><td colspan="7" class="text-center text-muted py-3">No API keys yet.</td></tr>{% endfor %}</tbody>
+    </table></div></div>
+    <div class="card mt-3"><div class="card-header">How the POS calls the ERP</div><div class="card-body small">
+<pre class="mb-0">POST /api/v1/integrations/pos/sales/
+X-API-Key: pos_xxxxxxxx...
+Idempotency-Key: MCT-POS1-000123      (unique per sale; retries are safe)
+Content-Type: application/json
+
+{"receipt_no": "MCT-POS1-000123",
+ "lines": [{"sku": "BEV-0001", "quantity": 2}],
+ "payment": {"method": "CARD"}}</pre></div></div>
+  </div>
+  {% if perms.integrations.add_apikey %}
+  <div class="col-12 col-xl-4">
+    <div class="card"><div class="card-header">New API key</div><div class="card-body">
+      <form method="post">{% csrf_token %}{% include "core/partials/form_fields.html" %}
+        <button class="btn btn-primary btn-sm mt-3"><i class="bi bi-key"></i> Create key</button></form>
+    </div></div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

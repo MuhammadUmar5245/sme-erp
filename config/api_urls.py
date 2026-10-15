@@ -6,6 +6,7 @@ from accounts import api as accounts_api
 from crm import api as crm_api
 from finance import api as finance_api
 from hr import api as hr_api
+from integrations import api as integrations_api
 from inventory import api as inventory_api
 from purchasing import api as purchasing_api
 from reports import api as reports_api
@@ -45,6 +46,8 @@ urlpatterns = [
     path("auth/token/", accounts_api.ObtainTokenView.as_view(), name="api-token"),
     path("reports/", reports_api.DatasetIndexView.as_view(), name="report-index"),
     path("reports/kpis/", reports_api.KPIView.as_view(), name="report-kpis"),
+    path("integrations/pos/sales/", integrations_api.POSSalesView.as_view(), name="pos-sales"),
+    path("integrations/export/<slug:entity>/", integrations_api.ExportView.as_view(), name="export"),
     path("finance/reports/<slug:name>/", finance_api.FinancialReportView.as_view(), name="finance-report"),
     path("", include(router.urls)),
 ]
