@@ -20,6 +20,16 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
+class Sequence(models.Model):
+    """Gap-free document number counters (one row per prefix and year), locked with SELECT FOR UPDATE."""
+
+    name = models.CharField(max_length=30, unique=True)
+    last_value = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.name}: {self.last_value}"
+
+
 def money_field(**kwargs):
     """All money fields: DecimalField(14, 3) - OMR has 3 decimal places (baisa)."""
     kwargs.setdefault("max_digits", 14)

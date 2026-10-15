@@ -1,0 +1,20 @@
+{% extends "core/generic_detail.html" %}
+{% load erp %}
+{% block detail_extra %}
+<div class="card">
+  <div class="card-header">Lines</div>
+  <div class="table-responsive">
+    <table class="table table-sm mb-0">
+      <thead><tr><th>Account</th><th>Description</th><th class="text-end">Debit</th><th class="text-end">Credit</th></tr></thead>
+      <tbody>
+      {% for line in object.lines.all %}
+        <tr><td><a href="{% url 'finance:account_detail' line.account_id %}">{{ line.account }}</a></td><td class="small">{{ line.description }}</td>
+          <td class="text-end font-monospace">{% if line.debit %}{{ line.debit|money }}{% endif %}</td>
+          <td class="text-end font-monospace">{% if line.credit %}{{ line.credit|money }}{% endif %}</td></tr>
+      {% endfor %}
+      </tbody>
+      <tfoot class="fw-bold table-light"><tr><td colspan="2">Total</td><td class="text-end font-monospace">{{ object.total_debit|money }}</td><td class="text-end font-monospace">{{ object.total_credit|money }}</td></tr></tfoot>
+    </table>
+  </div>
+</div>
+{% endblock %}

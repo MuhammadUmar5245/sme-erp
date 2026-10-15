@@ -1,0 +1,33 @@
+{% extends "core/generic_detail.html" %}
+{% load erp %}
+{% block detail_extra %}
+<div class="row g-3">
+  <div class="col-12 col-lg-4">
+    <div class="card h-100">
+      <div class="card-header">Stock by warehouse</div>
+      <table class="table table-sm mb-0">
+        {% for wh, qty in stock_by_warehouse %}
+          <tr><td>{{ wh.code }} <span class="text-muted small">{{ wh.city }}</span></td><td class="text-end font-monospace">{{ qty|floatformat:0 }}</td></tr>
+        {% endfor %}
+        <tr class="fw-bold"><td>Total</td><td class="text-end font-monospace {% if object.on_hand <= object.reorder_level %}text-danger{% endif %}">{{ object.on_hand|floatformat:0 }}</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="col-12 col-lg-8">
+    <div class="card h-100">
+      <div class="card-header">Recent movements</div>
+      <div class="table-responsive">
+        <table class="table table-sm mb-0">
+          <thead><tr><th>Date</th><th>Warehouse</th><th>Type</th><th class="text-end">Qty</th><th>Reference</th></tr></thead>
+          <tbody>
+          {% for m in movements %}
+            <tr><td class="small">{% cell m "movement_date" %}</td><td>{{ m.warehouse.code }}</td><td>{{ m.get_movement_type_display }}</td>
+                <td class="text-end font-monospace {% if m.quantity < 0 %}text-danger{% else %}text-success{% endif %}">{{ m.quantity|floatformat:0 }}</td><td class="small">{{ m.reference_no }}</td></tr>
+          {% empty %}<tr><td colspan="5" class="text-muted text-center py-3">No movements.</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

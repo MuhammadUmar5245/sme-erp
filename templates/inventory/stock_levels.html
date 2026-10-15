@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load erp %}
+{% block content %}
+<div class="page-header">
+  <h1>Stock levels</h1>
+  <div class="d-flex gap-2 flex-wrap align-items-center">
+    <span class="badge text-bg-light border">Inventory value: OMR {{ inventory_value|money }}</span>
+    {% if perms.inventory.add_stockmovement %}<a class="btn btn-primary btn-sm" href="{% url 'inventory:stock_operation' %}"><i class="bi bi-plus-lg"></i> Stock movement</a>{% endif %}
+  </div>
+</div>
+<form class="row g-2 mb-3" method="get">
+  <div class="col-12 col-md-4"><input class="form-control form-control-sm" type="search" name="q" value="{{ query }}" placeholder="SKU or product name"></div>
+  <div class="col-auto form-check ms-2 mt-2"><input class="form-check-input" type="checkbox" name="low" value="1" id="low" {% if low %}checked{% endif %}><label class="form-check-label small" for="low">Low stock only</label></div>
+  <div class="col-auto"><button class="btn btn-outline-primary btn-sm">Filter</button></div>
+</form>
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-sm table-hover mb-0">
+      <thead><tr><th>SKU</th><th>Product</th>{% for wh in warehouses %}<th class="text-end">{{ wh.code }}</th>{% endfor %}<th class="text-end">Total</th><th class="text-end">Reorder</th></tr></thead>
+      <tbody>
+      {% for row in rows %}
+        <tr class="{% if row.low %}table-warning{% endif %}">
+          <td><a href="{% url 'inventory:product_detail' row.product.pk %}">{{ row.product.sku }}</a></td>
+          <td>{{ row.product.name }}</td>
+          {% for qty in row.cells %}<td class="text-end font-monospace">{{ qty|floatformat:0 }}</td>{% endfor %}
+          <td class="text-end font-monospace fw-bold {% if row.product.on_hand_qty <= 0 %}text-danger{% endif %}">{{ row.product.on_hand_qty|floatformat:0 }}</td>
+          <td class="text-end font-monospace text-muted">{{ row.product.reorder_level|floatformat:0 }}</td>
+        </tr>
+      {% empty %}<tr><td colspan="9" class="text-center text-muted py-4">No products.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if page_obj.has_other_pages %}
+  <div class="card-footer bg-white small">
+    {% if page_obj.has_previous %}<a href="?q={{ query }}&low={{ low|default:'' }}&page={{ page_obj.previous_page_number }}">&laquo; Previous</a>{% endif %}
+    <span class="mx-2">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}<a href="?q={{ query }}&low={{ low|default:'' }}&page={{ page_obj.next_page_number }}">Next &raquo;</a>{% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

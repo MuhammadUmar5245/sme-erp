@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% comment %}Header form + one dynamic line formset (prefix "lines"). Used by PO, SO, invoice and journal forms.{% endcomment %}
+{% block content %}
+<div class="page-header">
+  <h1>{{ title }}</h1>
+  {% if list_url %}<a class="btn btn-link btn-sm" href="{{ list_url }}"><i class="bi bi-arrow-left"></i> Back to list</a>{% endif %}
+</div>
+<form method="post" novalidate>
+  {% csrf_token %}
+  <div class="card mb-3"><div class="card-body">{% include "core/partials/form_fields.html" %}</div></div>
+  <div class="card mb-3">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span>{{ lines_title|default:"Lines" }}</span>
+      <button class="btn btn-outline-primary btn-sm" data-formset-add="{{ formset.prefix }}"><i class="bi bi-plus-lg"></i> Add line</button>
+    </div>
+    {{ formset.management_form }}
+    {% if formset.non_form_errors %}<div class="alert alert-danger m-2 small">{{ formset.non_form_errors|join:" " }}</div>{% endif %}
+    <div class="table-responsive">
+      <table class="table table-sm mb-0 align-top">
+        <thead><tr>{% for field in formset.empty_form.visible_fields %}<th>{{ field.label }}</th>{% endfor %}</tr></thead>
+        <tbody id="{{ formset.prefix }}-rows">
+          {% for f in formset %}
+            <tr>{% for field in f.visible_fields %}<td style="min-width:{% if forloop.first %}220px{% else %}100px{% endif %}">{{ field }}{% for e in field.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}{% if forloop.first %}{% for h in f.hidden_fields %}{{ h }}{% endfor %}{% for e in f.non_field_errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}{% endif %}</td>{% endfor %}</tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <template id="{{ formset.prefix }}-empty">
+      <tr>{% for field in formset.empty_form.visible_fields %}<td>{{ field }}{% if forloop.first %}{% for h in formset.empty_form.hidden_fields %}{{ h }}{% endfor %}{% endif %}</td>{% endfor %}</tr>
+    </template>
+    {% if lines_help %}<div class="card-footer bg-white small text-muted">{{ lines_help }}</div>{% endif %}
+  </div>
+  <div class="d-flex gap-2">
+    <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> {{ submit_label|default:"Save" }}</button>
+    {% if list_url %}<a class="btn btn-outline-secondary" href="{{ list_url }}">Cancel</a>{% endif %}
+  </div>
+</form>
+{% endblock %}

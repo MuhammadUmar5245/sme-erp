@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load erp %}
+{% block content %}
+<div class="page-header"><h1>Financial reports</h1></div>
+<ul class="nav nav-tabs mb-3 flex-nowrap overflow-auto">
+  {% for key, label in tabs %}
+  <li class="nav-item"><a class="nav-link text-nowrap {% if report == key %}active{% endif %}" href="?report={{ key }}&date_from={{ date_from|date:'Y-m-d' }}&date_to={{ date_to|date:'Y-m-d' }}">{{ label }}</a></li>
+  {% endfor %}
+</ul>
+<form class="row g-2 align-items-end mb-3" method="get">
+  <input type="hidden" name="report" value="{{ report }}">
+  {% for field in form %}<div class="col-6 col-md-3"><label class="form-label small mb-1">{{ field.label }}</label>{{ field }}</div>{% endfor %}
+  <div class="col-auto"><button class="btn btn-outline-primary btn-sm">Run</button></div>
+</form>
+
+{% if pnl %}
+<div class="card"><div class="card-header">Profit &amp; loss · {{ date_from|date:"d M Y" }} – {{ date_to|date:"d M Y" }}</div>
+  <div class="table-responsive"><table class="table table-sm mb-0">
+    <tr class="table-light"><th colspan="2">Income</th></tr>
+    {% for r in pnl.income %}<tr><td>{{ r.account }}</td><td class="text-end font-monospace">{{ r.amount|money }}</td></tr>{% endfor %}
+    <tr class="fw-bold"><td>Total income</td><td class="text-end font-monospace">{{ pnl.total_income|money }}</td></tr>
+    <tr><td>Cost of goods sold</td><td class="text-end font-monospace">({{ pnl.cogs|money }})</td></tr>
+    <tr class="fw-bold table-light"><td>Gross profit <span class="text-muted fw-normal small">margin {{ pnl.gross_margin_pct|pct }}</span></td><td class="text-end font-monospace">{{ pnl.gross_profit|money }}</td></tr>
+    <tr class="table-light"><th colspan="2">Operating expenses</th></tr>
+    {% for r in pnl.expenses %}{% if not r.account.code|slice:":1" == "5" %}<tr><td>{{ r.account }}</td><td class="text-end font-monospace">{{ r.amount|money }}</td></tr>{% endif %}{% endfor %}
+    <tr class="fw-bold"><td>Total operating expenses</td><td class="text-end font-monospace">({{ pnl.operating_expenses|money }})</td></tr>
+    <tr class="fw-bold fs-6 {% if pnl.net_profit >= 0 %}table-success{% else %}table-danger{% endif %}"><td>Net profit</td><td class="text-end font-monospace">OMR {{ pnl.net_profit|money }}</td></tr>
+  </table></div></div>
+{% endif %}
+
+{% if tb %}
+<div class="card"><div class="card-header d-flex justify-content-between"><span>Trial balance as of {{ date_to|date:"d M Y" }}</span>
+  {% if tb.balanced %}<span class="badge text-bg-success">Balanced</span>{% else %}<span class="badge text-bg-danger">Out of balance</span>{% endif %}</div>
+  <div class="table-responsive"><table class="table table-sm mb-0">
+    <thead><tr><th>Account</th><th class="text-end">Debit</th><th class="text-end">Credit</th></tr></thead>
+    {% for r in tb.rows %}<tr><td>{{ r.account }}</td><td class="text-end font-monospace">{% if r.debit %}{{ r.debit|money }}{% endif %}</td><td class="text-end font-monospace">{% if r.credit %}{{ r.credit|money }}{% endif %}</td></tr>{% endfor %}
+    <tr class="fw-bold table-light"><td>Total</td><td class="text-end font-monospace">{{ tb.total_debit|money }}</td><td class="text-end font-monospace">{{ tb.total_credit|money }}</td></tr>
+  </table></div></div>
+{% endif %}
+
+{% if vat %}
+<div class="card" style="max-width:640px"><div class="card-header">VAT return (Oman, {{ vat.rate|floatformat:0 }}%) · {{ date_from|date:"d M Y" }} – {{ date_to|date:"d M Y" }}</div>
+  <table class="table table-sm mb-0">
+    <tr><td>Taxable supplies (net sales)</td><td class="text-end font-monospace">{{ vat.taxable_sales|money }}</td></tr>
+    <tr><td>Output VAT</td><td class="text-end font-monospace">{{ vat.output_vat|money }}</td></tr>
+    <tr><td>Taxable purchases and expenses</td><td class="text-end font-monospace">{{ vat.taxable_purchases|money }}</td></tr>
+    <tr><td>Input VAT (recoverable)</td><td class="text-end font-monospace">({{ vat.input_vat|money }})</td></tr>
+    <tr class="fw-bold {% if vat.net_vat_payable >= 0 %}table-warning{% else %}table-success{% endif %}"><td>Net VAT {% if vat.net_vat_payable >= 0 %}payable to the Tax Authority{% else %}refundable{% endif %}</td><td class="text-end font-monospace">OMR {{ vat.net_vat_payable|money }}</td></tr>
+  </table></div>
+{% endif %}
+
+{% if aging %}
+<div class="card"><div class="card-header">{{ aging_title }} as of {{ aging.as_of|date:"d M Y" }}</div>
+  <div class="table-responsive"><table class="table table-sm table-hover mb-0">
+    <thead><tr><th>Party</th>{% for key, label in aging.buckets %}<th class="text-end">{{ label }}</th>{% endfor %}<th class="text-end">Total</th></tr></thead>
+    <tbody>
+    {% for r in aging.rows %}
+      <tr><td>{{ r.party.name }}</td>{% for key, label in aging.buckets %}<td class="text-end font-monospace {% if key == 'd90_plus' and r|get_item:key %}text-danger{% endif %}">{% with v=r|get_item:key %}{% if v %}{{ v|money }}{% endif %}{% endwith %}</td>{% endfor %}<td class="text-end font-monospace fw-bold">{{ r.total|money }}</td></tr>
+    {% empty %}<tr><td colspan="7" class="text-center text-muted py-3">Nothing outstanding.</td></tr>{% endfor %}
+    </tbody>
+    <tfoot class="fw-bold table-light"><tr><td>Total</td>{% for key, label in aging.buckets %}<td class="text-end font-monospace">{{ aging.totals|get_item:key|money }}</td>{% endfor %}<td class="text-end font-monospace">{{ aging.totals.total|money }}</td></tr></tfoot>
+  </table></div></div>
+{% endif %}
+{% endblock %}
