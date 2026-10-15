@@ -1,0 +1,176 @@
+// SME-ERP - DAX measures for the Al Wadi Trading Power BI model (see model.md).
+// Create a table "_Measures" (Enter data, one empty column) and add each measure to it.
+// Amounts are OMR; format money measures as "#,0.000" (or "#,0" on cards) and % measures as "0.0%".
+
+// ===================== Sales =====================
+
+Total Revenue =
+    SUM ( fact_sales[net_amount] )        // net of VAT, discounts and returns (credit notes are negative rows)
+
+Revenue MTD =
+    TOTALMTD ( [Total Revenue], dim_date[date] )
+
+Revenue YTD =
+    TOTALYTD ( [Total Revenue], dim_date[date] )
+
+Revenue PY =
+    CALCULATE ( [Total Revenue], SAMEPERIODLASTYEAR ( dim_date[date] ) )
+
+YoY Growth % =
+    DIVIDE ( [Total Revenue] - [Revenue PY], [Revenue PY] )
+
+Gross Margin =
+    SUM ( fact_sales[gross_margin] )
+
+Gross Margin % =
+    DIVIDE ( [Gross Margin], [Total Revenue] )
+
+Invoice Count =
+    CALCULATE ( DISTINCTCOUNT ( fact_sales[invoice_id] ), fact_sales[line_type] = "SALE" )
+
+Avg Order Value =
+    DIVIDE ( CALCULATE ( [Total Revenue], fact_sales[line_type] = "SALE" ), [Invoice Count] )
+
+Units Sold =
+    SUM ( fact_sales[quantity] )
+
+Sales incl VAT =
+    SUM ( fact_sales[gross_amount] )
+
+// 3-month moving-average forecast: each month is forecast as the average of the three preceding
+// complete months. Plot it next to [Total Revenue] on a month axis that extends into the future.
+Sales Forecast 3M MA =
+VAR MonthStart = MIN ( dim_date[date] )
+VAR PrevMonthEnd = EOMONTH ( MonthStart, -1 )
+VAR LastActual = CALCULATE ( MAX ( fact_sales[sales_date] ), REMOVEFILTERS ( dim_date ) )
+VAR Window = DATESINPERIOD ( dim_date[date], PrevMonthEnd, -3, MONTH )
+RETURN
+    IF (
+        MonthStart <= EOMONTH ( LastActual, 1 ),       // no forecast further than one month ahead
+        DIVIDE ( CALCULATE ( [Total Revenue], Window, REMOVEFILTERS ( dim_date ) ), 3 )
+    )
+
+// ===================== Inventory =====================
+
+COGS =
+    SUM ( fact_sales[cost_amount] )
+
+// Closing stock value on the last day of the selected period (semi-additive).
+Inventory Value =
+VAR LastStockDate = MAX ( fact_inventory_daily[stock_date] )
+RETURN
+    CALCULATE ( SUM ( fact_inventory_daily[closing_value] ), fact_inventory_daily[stock_date] = LastStockDate )
+
+Avg Inventory Value =
+    AVERAGEX (
+        VALUES ( fact_inventory_daily[stock_date] ),
+        CALCULATE ( SUM ( fact_inventory_daily[closing_value] ) )
+    )
+
+Days in Period =
+    COUNTROWS ( VALUES ( fact_inventory_daily[stock_date] ) )
+
+// Annualised inventory turnover (COGS / average inventory).
+Inventory Turnover =
+    DIVIDE ( [COGS], [Avg Inventory Value] ) * DIVIDE ( 365, [Days in Period] )
+
+Days Inventory Outstanding =
+    DIVIDE ( [Avg Inventory Value], [COGS] ) * [Days in Period]
+
+// Number of products with zero stock (all warehouses together) on the last day of the period.
+Stock-out Count =
+VAR LastStockDate = MAX ( fact_inventory_daily[stock_date] )
+RETURN
+    COUNTROWS (
+        FILTER (
+            VALUES ( dim_product[product_id] ),
+            CALCULATE (
+                SUM ( fact_inventory_daily[closing_qty] ),
+                fact_inventory_daily[stock_date] = LastStockDate
+            ) <= 0
+        )
+    )
+
+Below Reorder Count =
+VAR LastStockDate = MAX ( fact_inventory_daily[stock_date] )
+RETURN
+    CALCULATE (
+        DISTINCTCOUNT ( fact_inventory_daily[product_id] ),
+        fact_inventory_daily[stock_date] = LastStockDate,
+        fact_inventory_daily[is_below_reorder] = TRUE ()
+    )
+
+// ===================== Finance / receivables =====================
+
+// fact_receivables is a current snapshot: ignore the date slicer for balances.
+Receivables Outstanding =
+    CALCULATE ( SUM ( fact_receivables[balance_due] ), REMOVEFILTERS ( dim_date ) )
+
+Overdue Receivables =
+    CALCULATE (
+        SUM ( fact_receivables[balance_due] ),
+        fact_receivables[days_overdue] > 0,
+        REMOVEFILTERS ( dim_date )
+    )
+
+Overdue % =
+    DIVIDE ( [Overdue Receivables], [Receivables Outstanding] )
+
+// Days Sales Outstanding over the last 90 days of credit sales (incl. VAT, as receivables include VAT).
+DSO =
+VAR Today = TODAY ()
+VAR Sales90 =
+    CALCULATE ( [Sales incl VAT], DATESINPERIOD ( dim_date[date], Today, -90, DAY ), REMOVEFILTERS ( dim_date ) )
+RETURN
+    DIVIDE ( [Receivables Outstanding], Sales90 ) * 90
+
+Cash In =
+    CALCULATE ( SUM ( fact_payments[amount] ), fact_payments[payment_type] = "CUSTOMER_RECEIPT" )
+
+Cash Out =
+    CALCULATE ( SUM ( fact_payments[amount] ), fact_payments[payment_type] = "SUPPLIER_PAYMENT" )
+        + SUM ( fact_expenses[total] )
+
+Net Cash Flow =
+    [Cash In] - [Cash Out]
+
+Operating Expenses =
+    SUM ( fact_expenses[amount] )
+
+Purchases =
+    SUM ( fact_purchases[net_amount] )
+
+// ===================== Customers / CRM =====================
+
+Avg CSAT =
+    AVERAGE ( fact_feedback[score] )
+
+Satisfied % =
+    DIVIDE ( CALCULATE ( COUNTROWS ( fact_feedback ), fact_feedback[is_satisfied] = TRUE () ), COUNTROWS ( fact_feedback ) )
+
+Complaints =
+    CALCULATE ( COUNTROWS ( fact_interactions ), fact_interactions[is_complaint] = TRUE () )
+
+// Complaints per 100 invoices.
+Complaint Rate =
+    DIVIDE ( [Complaints], [Invoice Count] ) * 100
+
+Active Customers =
+    CALCULATE ( DISTINCTCOUNT ( fact_sales[customer_id] ), fact_sales[line_type] = "SALE" )
+
+// ===================== System health (fact_system_metrics_hourly) =====================
+
+Requests =
+    SUM ( fact_system_metrics_hourly[request_count] )
+
+Avg Response ms =
+    DIVIDE (
+        SUMX ( fact_system_metrics_hourly, fact_system_metrics_hourly[avg_response_ms] * fact_system_metrics_hourly[request_count] ),
+        [Requests]
+    )
+
+Error Rate % =
+    DIVIDE ( SUM ( fact_system_metrics_hourly[error_count] ), [Requests] )
+
+Peak Active Users =
+    MAX ( fact_system_metrics_hourly[active_users] )
