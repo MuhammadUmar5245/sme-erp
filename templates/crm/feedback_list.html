@@ -1,0 +1,4 @@
+{% extends "core/generic_list.html" %}
+{% block before_table %}
+<div class="alert alert-light border small mb-3"><i class="bi bi-star-half text-warning"></i> Average satisfaction (CSAT) for the selection: <strong>{% if avg_csat %}{{ avg_csat|floatformat:1 }} / 5{% else %}–{% endif %}</strong></div>
+{% endblock %}

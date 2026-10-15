@@ -1,0 +1,9 @@
+{% extends "core/generic_detail.html" %}
+{% block detail_actions %}
+{% if object.status == "OPEN" and perms.crm.change_interaction %}
+<form method="post" action="{% url 'crm:interaction_close' object.pk %}">{% csrf_token %}
+  <button class="btn btn-success btn-sm" type="submit"><i class="bi bi-check2-circle"></i> Mark resolved</button>
+</form>
+{% endif %}
+<a class="btn btn-outline-secondary btn-sm" href="{% url 'crm:customer_detail' object.customer_id %}"><i class="bi bi-person-lines-fill"></i> Customer 360</a>
+{% endblock %}

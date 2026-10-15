@@ -1,0 +1,8 @@
+{% extends "core/generic_detail.html" %}
+{% load erp %}
+{% block detail_extra %}
+<div class="card"><div class="card-header">Credited lines</div><div class="table-responsive"><table class="table table-sm mb-0">
+  <thead><tr><th>Product</th><th class="text-end">Qty</th><th class="text-end">Net unit</th><th class="text-end">Net</th><th class="text-end">VAT</th><th class="text-end">Total</th></tr></thead>
+  <tbody>{% for l in object.lines.all %}<tr><td>{{ l.product }}</td><td class="text-end">{{ l.quantity|floatformat:0 }}</td><td class="text-end font-monospace">{{ l.unit_price|money }}</td><td class="text-end font-monospace">{{ l.line_subtotal|money }}</td><td class="text-end font-monospace">{{ l.line_vat|money }}</td><td class="text-end font-monospace">{{ l.line_total|money }}</td></tr>{% endfor %}</tbody>
+</table></div></div>
+{% endblock %}

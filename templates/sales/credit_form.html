@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load erp %}
+{% block content %}
+<div class="page-header"><h1>{{ title }}</h1><a class="btn btn-link btn-sm" href="{% url 'sales:invoice_detail' invoice.pk %}"><i class="bi bi-arrow-left"></i> Back to invoice</a></div>
+<form method="post">{% csrf_token %}
+  <div class="card mb-3"><div class="table-responsive"><table class="table table-sm mb-0">
+    <thead><tr><th>Product</th><th class="text-end">Invoiced</th><th class="text-end">Can credit</th><th class="text-end">Net unit price</th><th style="width:150px">Credit qty</th></tr></thead>
+    <tbody>{% for l in lines %}<tr><td>{{ l.product }}</td><td class="text-end">{{ l.quantity|floatformat:0 }}</td><td class="text-end">{{ l.creditable|floatformat:0 }}</td><td class="text-end font-monospace">{{ l.line_subtotal|money }}</td>
+      <td><input class="form-control form-control-sm text-end" type="number" step="0.001" min="0" max="{{ l.creditable }}" name="qty_{{ l.pk }}" {% if not l.creditable %}disabled{% endif %}></td></tr>{% endfor %}</tbody>
+  </table></div></div>
+  <div class="row g-3 mb-3" style="max-width:720px">
+    <div class="col-md-8"><label class="form-label">Reason</label><input class="form-control" name="reason" maxlength="200" required placeholder="e.g. Damaged in transit"></div>
+    <div class="col-md-4 d-flex align-items-end"><div class="form-check"><input class="form-check-input" type="checkbox" name="restock" id="restock" checked><label class="form-check-label" for="restock">Return goods to stock</label></div></div>
+  </div>
+  <button class="btn btn-warning"><i class="bi bi-arrow-return-left"></i> Post credit note</button>
+</form>
+{% endblock %}

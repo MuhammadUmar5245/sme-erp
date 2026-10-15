@@ -1,0 +1,36 @@
+{% extends "core/generic_detail.html" %}
+{% load erp %}
+{% block detail_actions %}
+<a class="btn btn-outline-secondary btn-sm" href="{% url 'sales:invoice_print' object.pk %}" target="_blank"><i class="bi bi-printer"></i> Print</a>
+{% if object.balance_due > 0 and object.status != "CANCELLED" and perms.sales.add_payment %}
+  <a class="btn btn-primary btn-sm" href="{% url 'sales:invoice_pay' object.pk %}"><i class="bi bi-cash-coin"></i> Receive payment</a>
+{% endif %}
+{% if object.status != "CANCELLED" and perms.sales.add_creditnote %}
+  <a class="btn btn-outline-warning btn-sm" href="{% url 'sales:invoice_credit' object.pk %}"><i class="bi bi-arrow-return-left"></i> Credit note</a>
+{% endif %}
+{% endblock %}
+{% block detail_extra %}
+<div class="card mb-3">
+  <div class="card-header d-flex justify-content-between"><span>Lines</span>{% if object.is_overdue %}<span class="badge text-bg-danger">Overdue</span>{% endif %}</div>
+  <div class="table-responsive"><table class="table table-sm mb-0">
+    <thead><tr><th>Product</th><th class="text-end">Qty</th><th class="text-end">Unit price</th><th class="text-end">Disc %</th><th class="text-end">Net</th><th class="text-end">VAT {{ "5%" }}</th><th class="text-end">Total</th></tr></thead>
+    <tbody>{% for l in object.lines.all %}<tr><td>{{ l.product }}</td><td class="text-end">{{ l.quantity|floatformat:0 }}</td><td class="text-end font-monospace">{{ l.unit_price|money }}</td><td class="text-end">{{ l.discount_pct|floatformat:0 }}</td><td class="text-end font-monospace">{{ l.line_subtotal|money }}</td><td class="text-end font-monospace">{{ l.line_vat|money }}</td><td class="text-end font-monospace">{{ l.line_total|money }}</td></tr>{% endfor %}</tbody>
+    <tfoot class="table-light">
+      <tr><td colspan="6" class="text-end">Subtotal</td><td class="text-end font-monospace">{{ object.subtotal|money }}</td></tr>
+      <tr><td colspan="6" class="text-end">VAT</td><td class="text-end font-monospace">{{ object.vat_amount|money }}</td></tr>
+      <tr class="fw-bold"><td colspan="6" class="text-end">Total (OMR)</td><td class="text-end font-monospace">{{ object.total|money }}</td></tr>
+      <tr><td colspan="6" class="text-end">Paid</td><td class="text-end font-monospace">{{ object.amount_paid|money }}</td></tr>
+      {% if object.amount_credited %}<tr><td colspan="6" class="text-end">Credited</td><td class="text-end font-monospace">{{ object.amount_credited|money }}</td></tr>{% endif %}
+      <tr class="fw-bold {% if object.balance_due > 0 %}table-warning{% else %}table-success{% endif %}"><td colspan="6" class="text-end">Balance due</td><td class="text-end font-monospace">{{ object.balance_due|money }}</td></tr>
+    </tfoot>
+  </table></div>
+</div>
+<div class="row g-3">
+  <div class="col-md-6"><div class="card h-100"><div class="card-header">Payments</div><ul class="list-group list-group-flush">
+    {% for p in object.payments.all %}<li class="list-group-item small">{{ p.number }} · {{ p.payment_date|date:"d M Y" }} · {{ p.get_method_display }} <span class="float-end font-monospace">{{ p.amount|money }}</span></li>{% empty %}<li class="list-group-item small text-muted">No payments.</li>{% endfor %}
+  </ul></div></div>
+  <div class="col-md-6"><div class="card h-100"><div class="card-header">Credit notes</div><ul class="list-group list-group-flush">
+    {% for c in object.credit_notes.all %}<li class="list-group-item small"><a href="{% url 'sales:creditnote_detail' c.pk %}">{{ c.number }}</a> · {{ c.reason }} <span class="float-end font-monospace">{{ c.total|money }}</span></li>{% empty %}<li class="list-group-item small text-muted">No credit notes.</li>{% endfor %}
+  </ul></div></div>
+</div>
+{% endblock %}
