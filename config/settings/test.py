@@ -8,3 +8,5 @@ STORAGES = {
     "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
 }
 ALLOWED_HOSTS = ["*"]
+# Deterministic fallback so tests run without a .env (never used outside tests).
+FIELD_ENCRYPTION_KEY = FIELD_ENCRYPTION_KEY or "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="  # noqa: F405

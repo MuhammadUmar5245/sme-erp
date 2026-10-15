@@ -12,6 +12,21 @@ implements it, and the automated tests / UAT cases that verify it.
 | FR-03 | TOTP two-factor authentication with QR enrolment; mandatory for Admin and Accountant | 2.3.6 | accounts | `test_security.py::test_enrolment_*`, `test_user_with_device_must_verify_after_password` |
 | FR-04 | Every create/update/delete on business data and every login is written to an immutable audit log, viewable by Admin | 4.6, 2.3.6 | accounts (`audit.py`) | `accounts/tests/test_audit.py` |
 | FR-05 | Admin manages users: create, edit, assign roles, deactivate, reset 2FA, unlock | 5.1.1 | accounts | `accounts/tests/test_user_management.py` |
+| FR-06 | Maintain products (SKU, unit, cost, price, reorder level), categories and warehouses (Muscat, Sohar) | 1.3.1, 3.6 | inventory | `core/tests/test_module_pages.py`, `inventory/tests/test_services.py` |
+| FR-07 | Stock is computed from IN/OUT/TRANSFER/ADJUST movements referencing their source document; weighted average cost | 1.3.1 | inventory | `inventory/tests/test_services.py` |
+| FR-08 | Low-stock alert list on the dashboard (stock ≤ reorder level) | 3.5.1, 4.5.2 | inventory, core | `test_low_stock_list`, `test_dashboard_lists_low_stock` |
+| FR-09 | Suppliers and purchase orders with Draft → Approved → Received → Billed workflow; approval restricted by role | 1.3.1 | purchasing | `purchasing/tests/test_procure_to_pay.py`, `test_procure_to_pay_over_api` |
+| FR-10 | Goods receipts (partial allowed) create stock IN movements and post Dr Inventory / Cr GRNI | 1.3.1 | purchasing | `test_full_procure_to_pay`, `test_receipt_is_atomic` |
+| FR-11 | Supplier bills (Dr GRNI, Dr VAT input / Cr AP) and supplier payments (partial allowed) | 1.3.1 | purchasing, finance | `test_full_procure_to_pay` |
+| FR-12 | Sales orders (Draft → Confirmed → Invoiced) | 1.3.1, 3.6 | sales | `sales/tests/test_order_to_cash.py` |
+| FR-13 | Tax invoices with 5% Oman VAT per line create stock OUT and a balanced journal entry atomically; invoices are blocked when stock is insufficient | 3.6, 4.4.2 | sales | `test_full_order_to_cash`, `test_invoice_blocked_when_stock_insufficient`, `test_invoice_posting_is_atomic` |
+| FR-14 | Customer payments (partial allowed) and credit notes (returns to stock, VAT reversal) | 3.6 | sales | `test_full_order_to_cash`, `test_credit_note_returns_stock_and_reverses_revenue` |
+| FR-15 | CRM: customers, contacts, interaction log (call/visit/email/complaint), feedback with CSAT 1–5 | 1.3.1, 1.3.2 | crm | `crm/tests/test_services.py` |
+| FR-16 | Customer 360 page: orders, invoices, outstanding balance, interactions, average CSAT | 1.3.1, 3.5.2 | crm | `test_customer_360_aggregates`, `test_customer_360_shows_balance_and_csat` |
+| FR-17 | Chart of accounts (seeded), journal entries that must balance, automatic postings from invoices, payments, credit notes, receipts and bills | 2.2, 3.6 | finance | `finance/tests/test_services.py` |
+| FR-18 | Expenses with input VAT; VAT return summary (output − input, 5%) | 3.5.1 | finance | `test_expense_posts_vat_input_and_bank`, `test_vat_return_nets_output_and_input` |
+| FR-19 | AR aging, AP aging, trial balance and profit & loss reports (UI and API) | 3.5.1 | finance | `test_trial_balance_balances_and_pnl`, `test_financial_report_endpoints` |
+| FR-20 | HR: departments, employees, leave requests with approval workflow (Fri–Sat weekend excluded, balance checks, no self-approval) | 1.3.1 | hr | `hr/tests/test_services.py`, `test_leave_approval_ui` |
 
 ## Non-functional requirements
 
@@ -22,4 +37,8 @@ implements it, and the automated tests / UAT cases that verify it.
 | NFR-03 | Account lockout after 5 failed logins (30 min) | 2.3.6 | django-axes | `test_security.py::test_account_locked_after_five_failed_logins` |
 | NFR-04 | Passwords ≥ 12 characters; sessions expire after 30 minutes idle | 2.3.6 | Django password validators, session settings | `test_password_policy_requires_12_characters`, `test_session_idle_timeout_is_30_minutes` |
 | NFR-05 | Health endpoint reports application and database status | 3.5.4, 5.2.3 | `/health/` | `core/tests/test_smoke.py` |
-| NFR-06 | RESTful service layer with OpenAPI documentation | 4.4.1 | DRF `/api/v1/`, `/api/docs/` | API tests per module |
+| NFR-06 | RESTful service layer with OpenAPI documentation | 4.4.1 | DRF `/api/v1/`, `/api/docs/` | `core/tests/test_module_api.py` |
+| NFR-07 | Sensitive personal data encrypted at rest (employee civil ID, IBAN) and masked in UI/API | 4.6 | `core/fields.py` (Fernet) | `test_sensitive_fields_are_encrypted_at_rest`, `test_employee_api_masks_sensitive_fields` |
+| NFR-08 | Cross-module postings are atomic (all-or-nothing) | 2.3.4 | `transaction.atomic()` in services | `test_invoice_posting_is_atomic`, `test_receipt_is_atomic` |
+| NFR-09 | Money stored as exact decimals with 3 places (OMR baisa) | 4.4.2 | `DecimalField(14, 3)` | all finance tests |
+| NFR-10 | Indexed relational schema with foreign keys | 4.4.2 | PostgreSQL 16, model indexes | migrations |

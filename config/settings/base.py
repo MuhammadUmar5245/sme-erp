@@ -47,6 +47,11 @@ INSTALLED_APPS = [
     "core",
     "accounts",
     "hr",
+    "inventory",
+    "finance",
+    "crm",
+    "purchasing",
+    "sales",
 ]
 
 MIDDLEWARE = [
