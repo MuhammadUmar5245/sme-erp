@@ -8,6 +8,7 @@
   </div>
 </div>
 
+{% if search_enabled or filter_form %}
 <div class="card mb-3">
   <div class="card-body py-2">
     <form method="get" class="row g-2 align-items-end" id="list-filters"
@@ -35,6 +36,7 @@
     </form>
   </div>
 </div>
+{% endif %}
 
 {% block before_table %}{% endblock %}
 {% include "core/partials/list_table.html" %}

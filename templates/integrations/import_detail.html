@@ -59,12 +59,12 @@
       <a class="btn btn-outline-danger {% if show == 'rejected' %}active{% endif %}" href="?show=rejected">Rejected</a>
     </span></div>
   <div class="table-responsive"><table class="table table-sm mb-0 small">
-    <thead><tr><th>Row</th><th>Status</th>{% for f in fields %}<th>{{ f.label }}</th>{% endfor %}<th>Fixes / reasons</th></tr></thead>
+    <thead><tr><th>Row</th><th>Status</th><th style="min-width:320px">Fixes / rejection reasons</th>{% for f in fields %}<th class="text-nowrap">{{ f.label }}</th>{% endfor %}</tr></thead>
     <tbody>{% for r in results %}
       <tr class="{% if r.status == 'rejected' %}table-danger{% elif r.status == 'fixed' %}table-warning{% endif %}">
         <td>{{ r.row }}</td><td>{{ r.status|upper }}</td>
-        {% for f in fields %}<td>{{ r.data|get_item:f.name|default_if_none:"" }}</td>{% endfor %}
-        <td>{% for e in r.errors %}<div class="text-danger"><i class="bi bi-x-circle"></i> {{ e }}</div>{% endfor %}{% for x in r.fixes %}<div class="text-body-secondary"><i class="bi bi-magic"></i> {{ x }}</div>{% endfor %}{% for w in r.warnings %}<div class="text-warning-emphasis"><i class="bi bi-exclamation-triangle"></i> {{ w }}</div>{% endfor %}</td>
+        <td style="min-width:320px">{% for e in r.errors %}<div class="text-danger"><i class="bi bi-x-circle"></i> {{ e }}</div>{% endfor %}{% for x in r.fixes %}<div class="text-body-secondary"><i class="bi bi-magic"></i> {{ x }}</div>{% endfor %}{% for w in r.warnings %}<div class="text-warning-emphasis"><i class="bi bi-exclamation-triangle"></i> {{ w }}</div>{% endfor %}</td>
+        {% for f in fields %}<td class="text-nowrap">{{ r.data|get_item:f.name|default_if_none:"" }}</td>{% endfor %}
       </tr>
     {% empty %}<tr><td colspan="20" class="text-center text-muted py-3">No rows.</td></tr>{% endfor %}</tbody>
   </table></div>
