@@ -5,10 +5,27 @@ param([Parameter(Position = 0)][string]$Target = "help", [Parameter(Position = 1
 # $ErrorActionPreference = "Stop": PowerShell 5.1 would treat Docker's progress output on stderr as an error.
 Set-Location $PSScriptRoot
 
+function New-Secret([int]$bytes) {
+    $buffer = New-Object byte[] $bytes
+    [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($buffer)
+    return [Convert]::ToBase64String($buffer).Replace("+", "-").Replace("/", "_")
+}
+
 function Ensure-Env {
+    # First run: create .env from .env.example with random secrets (Fernet key = url-safe base64 of 32 bytes).
     if (-not (Test-Path ".env")) {
-        Copy-Item ".env.example" ".env"
-        Write-Host "Created .env from .env.example - edit the secrets."
+        $values = @{
+            "DJANGO_SECRET_KEY"       = (New-Secret 48)
+            "FIELD_ENCRYPTION_KEY"    = (New-Secret 32)
+            "POSTGRES_PASSWORD"       = (New-Secret 18)
+            "POWERBI_READER_PASSWORD" = (New-Secret 18)
+        }
+        $lines = Get-Content ".env.example" | ForEach-Object {
+            $name = ($_ -split "=", 2)[0]
+            if ($values.ContainsKey($name)) { "$name=$($values[$name])" } else { $_ }
+        }
+        [System.IO.File]::WriteAllText((Join-Path $PSScriptRoot ".env"), (($lines -join "`n") + "`n"))
+        Write-Host "Created .env with random secrets (keep this file private)."
     }
 }
 
@@ -19,6 +36,7 @@ function Run([string[]]$cmd) {
 
 switch ($Target) {
     "up"             { Ensure-Env; Run @("docker", "compose", "up", "-d", "--build"); Write-Host "SME-ERP is starting at https://localhost" }
+    "env"            { Ensure-Env }
     "down"           { Run @("docker", "compose", "down") }
     "build"          { Ensure-Env; Run @("docker", "compose", "build") }
     "logs"           { Run @("docker", "compose", "logs", "-f", "--tail=100") }

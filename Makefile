@@ -8,7 +8,7 @@ help:
 	@echo "make up | down | migrate | seed | test | backup | restore | logs | shell | cert"
 
 env:
-	@test -f .env || (cp .env.example .env && echo "Created .env from .env.example - edit the secrets.")
+	@test -f .env || python3 scripts/init_env.py || (cp .env.example .env && echo "Created .env - edit the secrets.")
 
 up: env
 	$(COMPOSE) up -d --build
