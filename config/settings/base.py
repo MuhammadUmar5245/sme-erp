@@ -13,6 +13,10 @@ SECRET_KEY = env("DJANGO_SECRET_KEY", default="insecure-development-key-change-m
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
 CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS", default=["https://localhost"])
+# When HTTPS is published on another port (HTTPS_PORT in .env), trust that origin too.
+_https_port = env("HTTPS_PORT", default="443")
+if _https_port != "443":
+    CSRF_TRUSTED_ORIGINS += [f"https://localhost:{_https_port}", f"https://127.0.0.1:{_https_port}"]
 
 # Company profile (case company) - used in templates, documents and seed data.
 COMPANY = {
